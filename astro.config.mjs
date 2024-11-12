@@ -9,9 +9,6 @@ import netlify from "@astrojs/netlify";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://isaac-fate.github.io",
-  base: "mysite-astro",
-
   integrations: [
     react(),
     tailwind({
