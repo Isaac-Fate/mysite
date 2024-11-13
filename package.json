@@ -22,6 +22,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@unpic/astro": "^0.0.47",
     "astro": "^4.16.10",
     "astro-expressive-code": "^0.38.3",
     "class-variance-authority": "^0.7.0",

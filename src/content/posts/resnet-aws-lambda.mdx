@@ -405,21 +405,21 @@ you are prompted to choose an image from the ECR.
 Enter the ECR console, you will see the following UI.
 Click *Create repository* and following the instructions.
 
-![](/public//images/resnet-aws-lambda/ecr-console.png)
+![](/images/resnet-aws-lambda/ecr-console.png)
 
 After that, click the link to the repository you have created and
 then click the *View push commands* button
 to see the help messages like the following 
 for building and pushing Docker images to ECR.
 
-![](/public/images/resnet-aws-lambda/view-push-commands.png)
+![](/images/resnet-aws-lambda/view-push-commands.png)
 
 
 ## Create a Lambda Function using the Docker Container
 
 Enter the AWS Lambda console and click *Create function*:
 
-![](/public/images/resnet-aws-lambda/lambda-console.png)
+![](/images/resnet-aws-lambda/lambda-console.png)
 
 Choose *Container image* and click *Browse image* 
 to select the previously uploaded image from ECR.
@@ -427,7 +427,7 @@ to select the previously uploaded image from ECR.
 Recall that we set the linux/amd64 platform for the container image.
 So, here choose the x86_64 architecture.
 
-![](/public/images/resnet-aws-lambda/lambda-create-function.png)
+![](/images/resnet-aws-lambda/lambda-create-function.png)
 
 Then click *Create function* and wait for it.
 
@@ -441,7 +441,7 @@ To make it accessible for all users via HTTP requests,
 you need to generate a function URL.
 
 
-![](/public/images/resnet-aws-lambda/lambda-create-function-url.png)
+![](/images/resnet-aws-lambda/lambda-create-function-url.png)
 
 
 ### Set General Configuration
@@ -454,7 +454,7 @@ This is because of the limited resources assigned to the cloud function.
 You may assign more resources like time limit and memeory usage by 
 setting the following configuration:
 
-![](/public/images/resnet-aws-lambda/lambda-general-configuration.png)
+![](/images/resnet-aws-lambda/lambda-general-configuration.png)
 
 
 
