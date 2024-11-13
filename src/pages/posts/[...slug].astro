@@ -1,0 +1,48 @@
+---
+import { getCollection } from "astro:content";
+import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+  // Get blog posts collection
+  const posts = await getCollection("posts");
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+// Notify Astro to prerender the page as static HTML during the build process
+export const prerender = true;
+
+const { post } = Astro.props;
+
+// Render the blog post content
+const { Content } = await post.render();
+
+// Get the cover image path
+let cover = post.data.cover;
+console.log(cover);
+if (!cover) {
+  cover = `/images/${post.slug}/cover.jpg`;
+  console.log(cover);
+}
+---
+
+<BlogPostLayout frontmatter={post.data}>
+  <!-- Title -->
+  <h1>{post.data.title}</h1>
+
+  <!-- Cover image -->
+  <Image
+    class="rounded-md border-2 shadow-md"
+    src={cover}
+    alt=""
+    width={1792}
+    height={1024}
+  />
+
+  <!-- Main content -->
+  <Content />
+</BlogPostLayout>

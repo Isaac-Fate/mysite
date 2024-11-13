@@ -1,13 +1,8 @@
 ---
-import "@/styles/globals.css";
-
-import Layout from "../layouts/Layout.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
 import { StopwatchDemo } from "@/components/stopwatch-demo";
 ---
 
-<Layout title="Welcome to Astro.">
-  <main class="flex flex-col items-center">
-    <p>My Site {"->"}</p>
-    <StopwatchDemo client:load />
-  </main>
-</Layout>
+<MainLayout title="Welcome to Astro.">
+  <p>My Site</p>
+</MainLayout>

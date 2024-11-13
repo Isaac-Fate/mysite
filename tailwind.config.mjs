@@ -73,6 +73,11 @@ export default {
         },
       },
 
+      backgroundColor: {
+        panel: "rgba(24, 24, 24, 1.0)",
+        overlay: "rgba(39, 39, 42, 0.8)",
+      },
+
       fontFamily: {
         "fira-code": ['"Fira Code"'],
       },

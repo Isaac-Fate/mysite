@@ -1,0 +1,352 @@
+---
+title: The Publisher-Subscriber Pattern in React
+description: Introuduce the publisher-subscriber pattern in React and how to define custom events.
+createdAt: 2024-11-12T04:56:52.938Z
+tags:
+- react
+---
+
+import { Info } from "@/components/callout"
+
+## Stopwatch Demo
+
+Consider building a stopwatch component like the one below:
+
+
+<Info>
+hi
+</Info>
+
+🤔 Some thoughts:
+- The stopwatch should manage the state on its own. We should not lift the state up since it is updating actively. Lifting the state up to its parent would lead to frequent rerendering of the parent component, potentially degrading performance, especially if the parent includes heavy components or complex logic.
+
+- We want to start, stop and reset the stopwatch anywhere and anytime as we see fit. 
+
+- When the stopwatch is started, stopped, reset or when it is ticking, we want to invoke some logic accordingly. 
+Shall we do this by setting callbacks, 
+like `onStart`, `onStop`, ...?
+Or we can do something else? 
+
+
+## Gerneral Idea
+
+Define a controller `StopwatchController` and a compoenent `Stopwatch`.
+The controller will implement methods like `start`, `stop` and `reset`. 
+The component takes the controller as a prop and provides a visually display of the elapsed time.
+
+```tsx
+// stopwatch/controller.ts
+
+export class StopwatchController {
+  #seconds: number = 0;
+  #tickInterval: NodeJS.Timeout | null = null;
+
+  constructor() {}
+
+  /**
+   * Returns the elapsed seconds since the stopwatch was started.
+   */
+  get seconds() {
+    return this.#seconds;
+  }
+
+  start() {
+    if (this.#tickInterval) {
+      return;
+    }
+
+    // Update the elapsed time every 0.01s
+    this.#tickInterval = setInterval(() => {
+      this.#seconds += 0.01;
+    }, 10);
+  }
+
+  stop() {
+    if (this.#tickInterval) {
+      // Clear the tick interval
+      clearInterval(this.#tickInterval);
+
+      // Unset the tick interval
+      this.#tickInterval = null;
+    }
+  }
+
+  reset() {
+    // Reset the seconds to 0
+    this.#seconds = 0;
+
+    // Stop the stopwatch
+    this.stop();
+  }
+}
+```
+
+The `Stopwatch` component takes `props` of the following type 
+
+```ts
+interface StopwatchProps {
+  className?: string;
+  controller: StopwatchController;
+}
+```
+
+Stopwatch will maintain a state variable, seconds, using useState to display the elapsed time.
+
+Now, how can the controller notify the component to update the state? One approach is to define callback functions provided by the controller, for example `onTick`. The Stopwatch component sets this callback to update its state as follows:
+
+```tsx
+useEffect(() => {
+    controller.onTick = (seconds) => {
+        setSeconds(seconds);
+    };
+}, []);
+```
+
+However, what if we also need to execute some logic outside the Stopwatch component? For instance, suppose we want to log to the console whenever the stopwatch ticks. Since the onTick callback is already set by the component, we cannot overwrite it to perform additional tasks.
+
+The solution is to dispatch events and, based on that, apply a publisher-subscriber pattern.
+
+Instead of defining callbacks, we will first define custom events such as `StartEvent`, `StopEvent`, `TickEvent`, and so on. We will then dispatch these events at the appropriate locations within the controller, which is referred to as the *publisher*.
+
+Subsequently, any logic interested in a corresponding event can listen for it. For example, the `Stopwatch` component will listen to events instead of setting callbacks to update its internal state. The `Stopwatch` is referred as the *subscriber*.
+
+```tsx 
+useEffect(() => {
+    controller.addEventListener("tick", (event) => {
+        setSeconds(event.detail.seconds);
+    })
+}, []);
+```
+
+If we want to log the elapsed seconds outside the component, we simply write another listener to handle the `TickEvent`.
+
+```ts 
+controller.addEventListener("tick", (event) => {
+    console.log(`elapsed seconds: ${event.detail.seconds}`);
+})
+```
+
+This logging logic is also a *subscriber*.
+
+> One publisher can have multiple subscribers.
+
+
+
+## Custom Events
+
+To define our own events, we need to extends the class 
+[`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent).
+
+
+
+
+### Events without Extra Data
+
+
+Definition of a `StartEvent` for the stopwatch:
+
+```ts
+class StartEvent extends CustomEvent<null> {
+  constructor() {
+    super("start");
+  }
+}
+```
+
+The generic type `T` in `CustomEvent<T>` 
+specifies the type of the `detail` property. 
+For the `StartEvent`, we don't need to attach any extra data.
+So, we net the `T` to `null`. 
+
+
+### Events with Extra Data
+
+Now, consider defining the `TickEvent` 
+which is fired whenever the value of the elapsed seconds changes, 
+and the event accommodates the elapsed seconds since the start of the stopwatch. 
+
+```ts 
+class TickEvent extends CustomEvent<number> {
+  constructor(seconds: number) {
+    super("tick", { detail: seconds });
+  }
+}
+```
+
+Then the value of the elapsed seconds can be accessed like `const seconds = event.detail`.
+
+Alternatively, I recommend the following boilerplate for any CustomEvent with a non-null `detail`, where we treat `detail` as an object and define its schema. Using this boilerplate, we can handle more complex event data cleanly.
+
+```ts 
+interface TickEventDetail {
+  seconds: number;
+}
+
+class TickEvent extends CustomEvent<TickEventDetail> {
+  constructor(detail: TickEventDetail) {
+    super("tick", { detail });
+  }
+}
+```
+
+
+## The Event Target
+
+To dispatch and add or remove event listeners, we need to use a DOM element as an *event target*:
+
+- `element.dispatch(event)`
+- `element.addEventListener("xxx", listener)`
+- `element.removeEventListener("xxx", listener)`
+
+One option is to create a dummy Div element as the event target using `const eventTarget = new HTMLDivElement()` as a property of the controller.
+
+However, there is actually an `EventTarget`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) class that we can instantiate. By definition, `EventTarget` is an abstraction of objects that can receive events and may have listeners for them.
+
+```diff lang="ts"
+// stopwatch/controller.ts
+
+export class StopwatchController {
+  #seconds: number = 0;
+  #tickInterval: NodeJS.Timeout | null = null;
++  #eventTarget = new EventTarget();
+
+  constructor() {}
+
+  // ...
+}
+```
+
+
+
+## Add/Remove Event Listeners
+
+To add or remove a event listener, we need to specify
+
+- `type`: Event type/name, the unique identifier of this event
+- `listener`: `(event: Event) => void`
+
+
+```ts 
+eventTarget.addEventListener("start", listener);
+eventTarget.removeEventListener("start", listener);
+```
+
+But how can we define add and remove event listener methods for each of our custom events?
+
+### Define `addXxxEventListener` and `removeXxxEventListener` for Each `Xxx` Event
+
+Let's first implement `addStartEventListener`:
+
+
+```ts
+addStartEventListener(listener: (event: StartEvent) => void) {
+  this.#eventTarget.addEventListener(
+    "start",
+    listener,
+  );
+}
+```
+
+If you are using TypeScript, you might encounter a type error because addEventListener does not accept `(event: StartEvent) => void` as a listener. 
+But don't worry.
+You can use a dirty little trick 👻 with `as` type casting:
+
+```ts
+addStartEventListener(listener: (event: StartEvent) => void) {
+  this.#eventTarget.addEventListener(
+    "start",
+    listener as EventListenerOrEventListenerObject,
+  );
+}
+```
+
+Then, basically COPY and PASTE the same code snippet for other events...
+
+```ts
+// ...
+
+addStartEventListener(listener: (event: StartEvent) => void) {
+  this.#eventTarget.addEventListener(
+    "start",
+    listener as EventListenerOrEventListenerObject,
+  );
+}
+
+removeStartEventListener(listener: (event: StartEvent) => void) {
+  this.#eventTarget.addEventListener(
+    "start",
+    listener as EventListenerOrEventListenerObject,
+  );
+}
+
+addStopEventListener(listener: (event: StopEvent) => void) {
+  this.#eventTarget.addEventListener(
+    "stop",
+    listener as EventListenerOrEventListenerObject,
+  );
+}
+
+removeStopEventListener(listener: (event: StopEvent) => void) {
+  this.#eventTarget.addEventListener(
+    "stop",
+    listener as EventListenerOrEventListenerObject,
+  );
+}
+
+// ...
+```
+
+
+
+### Define a Single Pair of `addEventListener` and `removeEventListener` -- Play around with Types
+
+However, we can do better by playing around with type to eliminate the repetition of the same logic.
+
+First, define a `EventMap` that maps every event type to the associated custom event class. 
+
+```ts 
+interface EventMap {
+  start: StartEvent;
+  stop: StopEvent;
+  reset: ResetEvent;
+  tick: TickEvent;
+}
+```
+
+Next, leveraging the type tricks 
+of [`keyof`](https://www.typescriptlang.org/docs/handbook/2/typeof-types.html) 
+and [mapped types](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html), 
+we can only define a single pair of `addEventListener` and `removeEventListener`:
+
+
+```ts
+addEventListener<K extends keyof EventMap>(
+  type: K,
+  listener: (event: EventMap[K]) => void,
+) {
+  this.#eventTarget.addEventListener(
+    type,
+    listener as EventListenerOrEventListenerObject,
+  );
+}
+
+removeEventListener<K extends keyof EventMap>(
+  type: K,
+  listener: (event: EventMap[K]) => void,
+) {
+  this.#eventTarget.removeEventListener(
+    type,
+    listener as EventListenerOrEventListenerObject,
+  );
+}
+```
+
+## Summary
+
+1. Define a new custom event that extends `CustomEvent`
+2. Modify `EventMap`
+3. Dispatch the event in the desired place
+
+
+## Implementation
+

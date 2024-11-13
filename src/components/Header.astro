@@ -1,0 +1,36 @@
+---
+import { config } from "@/config";
+
+import { Logo } from "./logo";
+import NavigationLink from "./NavigationLink.astro";
+---
+
+<header
+  class="fixed left-0 right-0 top-0 z-40 flex flex-row justify-between gap-8 border-b-2 bg-panel px-8 py-0"
+  style={{ height: config.headerHeight }}
+>
+  <!-- Logo -->
+  <Logo className="flex h-full flex-col justify-center" />
+
+  <!-- Navigation -->
+  <nav class="flex h-full flex-row gap-8">
+    <NavigationLink title="Home" href="/" />
+    <NavigationLink
+      title="Blog"
+      href="/blog"
+      isActive={(href, pathname) => {
+        if (!href) return false;
+
+        if (pathname.startsWith(href)) {
+          return true;
+        }
+
+        if (pathname.startsWith("/posts")) {
+          return true;
+        }
+
+        return false;
+      }}
+    />
+  </nav>
+</header>

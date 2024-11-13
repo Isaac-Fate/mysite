@@ -1,16 +1,20 @@
 ---
-import "@fontsource/twinkle-star";
-import firaMono from "@fontsource-variable/fira-mono/files/woff2/fira-mono-latin-400-italic.woff2";
+// Styles
+import "@/styles/globals.css";
+
+import { ViewTransitions } from "astro:transitions";
+import { cn } from "@/lib/utils";
 
 interface Props {
+  className?: string;
   title: string;
 }
 
-const { title } = Astro.props;
+const { className, title } = Astro.props;
 ---
 
 <!doctype html>
-<html class="font-fira-code dark" lang="en">
+<html class="dark font-fira-code" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
@@ -18,8 +22,12 @@ const { title } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+
+    <!-- Enable view transitions for the entire site -->
+    <ViewTransitions />
   </head>
-  <body>
+
+  <body class={cn("flex flex-col items-center", className)}>
     <slot />
   </body>
 </html>

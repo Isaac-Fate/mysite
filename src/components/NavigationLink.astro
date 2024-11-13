@@ -1,0 +1,69 @@
+---
+interface Props {
+  title: string;
+  href?: string;
+  isActive?:
+    | boolean
+    | ((href: string | undefined, pathname: string) => boolean);
+}
+
+const { title, href } = Astro.props;
+
+console.log(`path name: ${Astro.url.pathname}`);
+
+// Get the current path
+const pathname = Astro.url.pathname;
+
+// Determine if the navigation link is active
+let isActive = false;
+if (Astro.props.isActive === true) {
+  isActive = true;
+} else if (typeof Astro.props.isActive === "function") {
+  // Determine using the provided function
+  isActive = Astro.props.isActive(href, pathname);
+} else {
+  // It is active if the href matches the current path
+  isActive = href === pathname;
+}
+
+// Width of the underline
+const underlineWidth = "0.1rem";
+---
+
+<a
+  class="relative flex h-full flex-col items-center justify-center font-semibold text-code-class"
+  ,
+  href={href}
+  style={{}}
+>
+  <p>{title}</p>
+
+  <!-- Underline -->
+  <div
+    class="absolute h-full rounded-sm border-code-class"
+    class:list={{ "navigation-link-underline": isActive }}
+    style={{
+      borderBottomWidth: underlineWidth,
+      transform: `translateY(${underlineWidth})`,
+    }}
+  >
+  </div>
+</a>
+
+<style>
+  .navigation-link-underline {
+    width: 100%;
+    animation: draw-underline 300ms ease-in-out forwards;
+  }
+
+  @keyframes draw-underline {
+    from {
+      width: 0%;
+      opacity: 0;
+    }
+    to {
+      width: 100%;
+      opacity: 1;
+    }
+  }
+</style>

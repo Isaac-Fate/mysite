@@ -1,0 +1,22 @@
+---
+import MainLayout from "./MainLayout.astro";
+
+// Props
+const { frontmatter } = Astro.props;
+
+const title = `Blog - ${frontmatter.title}`;
+---
+
+<MainLayout
+  className="prose gap-0 text-code-variable prose-h1:text-code-class prose-h2:text-code-function prose-h3:text-code-function prose-a:text-code-constant prose-blockquote:text-code-string prose-strong:text-code-variable prose-code:text-code-keyword-control prose-ul:mt-0"
+  title={title}
+>
+  <!-- Blog post content -->
+  <slot />
+</MainLayout>
+
+<style is:global>
+  .expressive-code {
+    margin-top: 20;
+  }
+</style>

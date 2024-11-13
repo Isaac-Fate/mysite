@@ -1,0 +1,21 @@
+---
+import { cn } from "@/lib/utils";
+
+interface Props {
+  className?: string;
+  date: Date;
+}
+
+const { className, date } = Astro.props;
+---
+
+<div class={cn("flex flex-row items-center", className)}>
+  {/* Icon */}
+  <span class="icon-[ri--calendar-line]"></span>
+
+  {/* Space */}
+  <span>&nbsp;</span>
+
+  {/* Date */}
+  <span>{date.toLocaleString()}</span>
+</div>

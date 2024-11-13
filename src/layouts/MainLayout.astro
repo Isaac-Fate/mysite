@@ -1,0 +1,26 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Header from "@/components/Header.astro";
+import { cn } from "@/lib/utils";
+import { config } from "@/config";
+
+interface Props {
+  className?: string;
+  title: string;
+}
+
+const { className, title } = Astro.props;
+---
+
+<BaseLayout className="" title={title}>
+  <!-- Header -->
+  <Header />
+
+  <main
+    class={cn("flex max-w-[500px] w-2/3 flex-col gap-4 py-8", className)}
+    style={{ marginTop: config.headerHeight }}
+  >
+    <!-- Main content -->
+    <slot />
+  </main>
+</BaseLayout>
