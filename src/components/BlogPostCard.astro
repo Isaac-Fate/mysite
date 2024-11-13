@@ -15,7 +15,7 @@ const { slug, title, description, createdAt } = Astro.props;
 // Get the cover image path
 let cover = Astro.props.cover;
 if (!cover) {
-  cover = `/images/${slug}/cover.jpg`;
+  cover = `/images/${slug}/cover.png`;
 }
 
 // Infer the blog post pathname from the slug

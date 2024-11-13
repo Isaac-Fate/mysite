@@ -1,0 +1,109 @@
+---
+title: Pagination with Shadcn
+description: How to make a pagination component in Next.js with Shadcn.
+createdAt: 2024-10-02T13:03:05.778Z
+tags: []
+---
+
+import { PaginationBarDemo } from "@/components/pagination-bar-demo";
+
+First, you should get familiar with [pagination components (e.g., `Pagination`, `PaginationItem`, `PaginationLink`, ...) provided by Shadcn](https://ui.shadcn.com/docs/components/pagination).
+
+Play around with the following pagination bar, and think about how to make it with Shadcn 🤔.
+
+
+<PaginationBarDemo client:load numPages={100}/>
+
+
+The total number of pagination items is always 7 (including the ellipisis items but excluding the previous and next pagination items). This is to ensure that the pagination bar has a fixed width.
+
+
+At a first glance, the pagination bar has 3 different UI displays (considering the number of positions of the ellipsis items):
+1. Leading 7 items followed by an ellipsis and the last pagination item. e.g., 1, 2, 3, 4, 5, ..., 100. This happens when the active page number is less than 5.
+2. The active pagination item is at the center surrounded by 2 consecutive pagination items. And the the bar starts with the first item followed by an ellipsis and ends with an ellipsis followed by the last pagination item. e.g., 1, ..., 9, 10, 11, ..., 100 where 10 is the active apge. This happens when the active page number is greater than or equal to 5 and less than n-3 where n is the last page number.
+3. Trailing 7 items preceded by an ellipsis and the first pagination item. e.g., 1, ..., 96, 97, 98, 99, 100. This happens when the active page number is greater than or equal to n-3.
+
+Wait, what if the number of pages is less than or equal to 7? Then there is no need to display any ellipsis items. But how to make sure the width of the bar stays the same? 
+
+Yes, there is a fourth case, which I call the *enumerated pagination items*. And the empty item slots are filled with *placeholder* items, which are also `PaginationItem` components to maintain consistent width.
+
+4. Enumerated pagination items. e.g., 1, 2, 3, placeholder, placeholder, placeholder, placeholder.
+
+Interact with the following examples:
+
+<PaginationBarDemo client:load numPages={3}/>
+<PaginationBarDemo client:load numPages={7}/>
+
+
+## Implementation
+
+The following code snippets are the simplified ones from my actual implementations.
+They only illustrate the essential ideas. 
+You may add more features as you like.
+
+Properties of `PaginationBar`:
+
+```tsx
+interface PaginationBarProps {
+  className?: string;
+  numPages: number;
+  activePageNumber: number;
+  pageNumberToLink?: (pageNumber: number) => string;
+}
+```
+
+Build the pagination link:
+
+```tsx
+function buildPaginationLink(props: PaginationBarProps, pageNumber: number) {
+  // Check whether this is the active page
+  const isActive = pageNumber === props.activePageNumber;
+
+  return (
+    <PaginationLink
+      className={cn("", {
+        // Color of the active page
+        "text-accent-foreground": isActive,
+      })}
+      href={props.pageNumberToLink?.(pageNumber) ?? ""}
+      isActive={isActive}
+    >
+      {pageNumber}
+    </PaginationLink>
+  );
+}
+```
+
+Build leading pagination items with an ellipsis followed by the last pagination item:
+
+```tsx
+function buildLeadingPaginationItems(props: PaginationBarProps) {
+  return (
+    <>
+      {/* Leading pagination items */}
+      {[1, 2, 3, 4, 5].map((pageNumber, index) => {
+        return (
+          <PaginationItem key={index + 1}>
+            {buildPaginationLink(props, pageNumber)}
+          </PaginationItem>
+        );
+      })}
+
+      {/* Ellipsis */}
+      <PaginationItem key={6}>
+        <PaginationEllipsis />
+      </PaginationItem>
+
+      {/* Last pagination item */}
+      <PaginationItem key={7}>
+        {buildPaginationLink(props, props.numPages)}
+      </PaginationItem>
+    </>
+  );
+}
+```
+
+Since we know there are always 7 pagination items, the `key` property for each item can simply be one of 1~7.
+
+
+

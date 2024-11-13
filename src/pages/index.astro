@@ -1,8 +1,94 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
-import { StopwatchDemo } from "@/components/stopwatch-demo";
+import { Image } from "astro:assets";
+import {
+  GitHubLink,
+  WhatsAppLink,
+  MediumLink,
+  EmailLink,
+} from "@/components/social-media-link";
+
+import { getCollection } from "astro:content";
+
+import myPicture from "../assets/isaac-fei.jpg";
+import BlogPostCard from "@/components/BlogPostCard.astro";
+
+// Get all blog posts
+const posts = await getCollection("posts");
+
+// Sort blog posts by creation date in descending order
+posts.sort(
+  // @ts-ignore
+  (post1, post2) =>
+    post2.data.createdAt.valueOf() - post1.data.createdAt.valueOf(),
+);
+
+// Maximum number of recent blog posts
+const maxNumRecentBlogPosts = 5;
+
+// Get the recent blog posts
+const recentBlogPosts = posts.slice(0, maxNumRecentBlogPosts);
 ---
 
-<MainLayout title="Welcome to Astro.">
-  <p>My Site</p>
+<MainLayout className="h-full" title="Welcome to Astro.">
+  {/* Introduction */}
+  <div class="flex flex-col items-center justify-between gap-4 text-center">
+    {/* My picture */}
+    <div>
+      <Image
+        class="h-[12rem] w-[12rem] rounded-full border-2 object-cover shadow-md"
+        src={myPicture}
+        alt="My picture"
+      />
+    </div>
+
+    <p>Welcome to my website 👋</p>
+
+    {/* Social links */}
+    <div class="flex flex-row justify-between gap-4 text-2xl">
+      <GitHubLink />
+      <WhatsAppLink />
+      <MediumLink />
+      <EmailLink />
+    </div>
+  </div>
+
+  <!-- Recent blog posts -->
+  <div class="-translate-x-4 text-2xl font-semibold">
+    <span class="text-code-variable">recent_posts</span>
+    <span class="text-code-plain">=</span>
+    <span class="text-code-bracket-1">{"["}</span>
+  </div>
+
+  <!-- Blog post cards -->
+  {
+    // @ts-ignore
+    recentBlogPosts.map((post) => (
+      <BlogPostCard
+        slug={post.slug}
+        title={post.data.title}
+        description={post.data.description}
+        createdAt={post.data.createdAt}
+        cover={post.data.cover}
+      />
+    ))
+  }
+
+  <!-- Read more -->
+  <!-- Navigate to the blog page -->
+  <a
+    class="flex flex-row text-xl hover:cursor-pointer md:text-3xl"
+    href="/blog"
+  >
+    <span class="text-code-plain">...</span>
+    <span>&nbsp;</span>
+    <span class="animate-pulse text-code-comment">
+      {"// Read more ->"}
+    </span>
+  </a>
+
+  <!-- End of recent blog post cards -->
+  <div class="-translate-x-4 text-2xl font-semibold">
+    <span class="text-code-bracket-1">{"]"}</span>
+  </div>
 </MainLayout>

@@ -1,0 +1,110 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import BlogPostCard from "@/components/BlogPostCard.astro";
+import { PaginationBar } from "@/components/pagination-bar";
+import { getCollection } from "astro:content";
+import { z } from "zod";
+
+// Maximum number of blog posts per page
+const maxNumPostsPerPage = 3;
+
+// Get all blog posts
+const posts = await getCollection("posts");
+
+// Sort blog posts by creation date in descending order
+posts.sort(
+  // @ts-ignore
+  (post1, post2) =>
+    post2.data.createdAt.valueOf() - post1.data.createdAt.valueOf(),
+);
+
+// Count the number of pages
+const numPages = Math.ceil(posts.length / maxNumPostsPerPage);
+
+export function getStaticPaths() {
+  // Generate page numbers
+  const pageNumbers = Array.from({ length: numPages }, (_, i) => i + 1);
+
+  // Create static paths from page numbers
+  const staticPaths = pageNumbers.map((pageNumber) => ({
+    params: { pageNumber },
+  }));
+
+  return staticPaths;
+}
+
+// Get the page number
+let { pageNumber } = Astro.params;
+
+// The pathname is /blog
+// Redirect to the first page /blog/1
+if (pageNumber === undefined) {
+  pageNumber = 1;
+}
+
+// Try to parse pageNumber to an integer
+try {
+  pageNumber = z
+    .preprocess((value) => {
+      // Convert string to number
+      if (typeof value === "string") {
+        return Number(value);
+      }
+
+      return value;
+    }, z.number().int())
+    .parse(pageNumber);
+} catch (error) {
+  // Log the error
+  console.error(error);
+
+  // Redict to 404
+  Astro.response.status = 404;
+}
+
+// Redict to 404
+if (pageNumber > numPages) {
+  Astro.response.status = 404;
+}
+
+// Get the blog posts for the current page
+const postsForPage = posts.slice(
+  (pageNumber - 1) * maxNumPostsPerPage,
+  pageNumber * maxNumPostsPerPage,
+);
+---
+
+<MainLayout className="flex flex-col" title="Isaac Fei - Blog">
+  <!-- Title -->
+  <div class="-translate-x-4 text-2xl font-semibold">
+    <span class="text-code-variable">blog_posts</span>
+    <span class="text-code-plain">=</span>
+    <span class="text-code-bracket-1">{"["}</span>
+  </div>
+
+  <!-- Blog post cards -->
+  {
+    // @ts-ignore
+    postsForPage.map((post) => (
+      <BlogPostCard
+        slug={post.slug}
+        title={post.data.title}
+        description={post.data.description}
+        createdAt={post.data.createdAt}
+        cover={post.data.cover}
+      />
+    ))
+  }
+
+  <!-- Pagination bar -->
+  <PaginationBar
+    numPages={numPages}
+    activePageNumber={pageNumber}
+    pageNumberToLink={(pageNumber) => `/blog/${pageNumber}`}
+  />
+
+  <!-- End of blog post cards -->
+  <div class="-translate-x-4 text-2xl font-semibold">
+    <span class="text-code-bracket-1">{"]"}</span>
+  </div>
+</MainLayout>
