@@ -3,9 +3,9 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro sync && astro dev",
+    "dev": "export NODE_ENV=development && astro sync && astro dev",
     "start": "astro dev",
-    "build": "astro check && astro sync && astro build",
+    "build": "export NODE_ENV=production && astro check && astro sync && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "sync": "astro sync"

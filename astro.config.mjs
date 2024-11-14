@@ -46,7 +46,7 @@ export default defineConfig({
     pagefind(),
   ],
 
-  output: "server",
+  output: "static",
   adapter: netlify({
     edgeMiddleware: true,
   }),
