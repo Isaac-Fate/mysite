@@ -1,0 +1,98 @@
+---
+import { cn } from "@/lib/utils";
+
+interface Props {
+  className?: string;
+}
+
+const { className } = Astro.props;
+
+const pathname = Astro.url.pathname;
+const isActive = pathname.startsWith("/search");
+---
+
+<a
+  id="search-button"
+  class={cn(
+    "relative bg-background flex flex-row rounded-md  px-[2rem] py-2 hover:cursor-pointer",
+    className,
+    {
+      "search-button-active": isActive,
+    },
+  )}
+  href="/search"
+>
+  {/* Search icon */}
+  <div
+    class="flex -translate-x-[1rem] flex-col justify-center p-0 text-code-class"
+  >
+    <span class="icon-[my--search]"></span>
+  </div>
+
+  {/* Text */}
+  <p>Search</p>
+
+  {/* Slash key icon */}
+  <div
+    id="search-button-hotkey-icon"
+    class="flex h-full translate-x-[1rem] flex-col justify-center text-code-class duration-300"
+    ,
+  >
+    <span class="icon-[solar--slash-square-linear]"></span>
+  </div>
+</a>
+
+<script>
+  import { navigate } from "astro:transitions/client";
+
+  // Hotkey
+  const hotkey = "/";
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === hotkey) {
+      event.preventDefault();
+
+      // Get the search button hotkey icon
+      const searchButtonHotkeyIcon = document.getElementById(
+        "search-button-hotkey-icon",
+      );
+
+      // Enlarge the icon
+      searchButtonHotkeyIcon?.classList.add("scale-150");
+    }
+  });
+
+  document.addEventListener("keyup", (event) => {
+    if (event.key === hotkey) {
+      event.preventDefault();
+
+      // Get the search button hotkey icon
+      const searchButtonHotkeyIcon = document.getElementById(
+        "search-button-hotkey-icon",
+      );
+
+      // Reset the icon to its original size
+      searchButtonHotkeyIcon?.classList.remove("scale-150");
+
+      // Navigate to the search page smoothly
+      navigate("/search");
+    }
+  });
+</script>
+
+<style>
+  .search-button-active {
+    animation: ring-pulse 1.5s infinite ease-in-out alternate-reverse;
+  }
+
+  @keyframes ring-pulse {
+    0% {
+      box-shadow: none;
+    }
+
+    100% {
+      box-shadow: 0 0 0 1px #4ec9b0;
+      color: #4ec9b0;
+    }
+  }
+</style>

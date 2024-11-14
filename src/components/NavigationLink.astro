@@ -21,9 +21,23 @@ if (Astro.props.isActive === true) {
 } else if (typeof Astro.props.isActive === "function") {
   // Determine using the provided function
   isActive = Astro.props.isActive(href, pathname);
+} else if (!href) {
+  isActive = false;
 } else {
+  // Remove the possible trailing slashes
+
+  let modifiedHref = href;
+  if (modifiedHref.endsWith("/")) {
+    modifiedHref = href.slice(0, -1);
+  }
+
+  let modifiedPathname = pathname;
+  if (modifiedPathname.endsWith("/")) {
+    modifiedPathname = modifiedPathname.slice(0, -1);
+  }
+
   // It is active if the href matches the current path
-  isActive = href === pathname;
+  isActive = modifiedHref === modifiedPathname;
 }
 
 // Width of the underline

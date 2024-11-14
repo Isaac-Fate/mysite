@@ -1,5 +1,42 @@
 const { addDynamicIconSelectors } = require("@iconify/tailwind");
 
+import {
+  importDirectorySync,
+  cleanupSVG,
+  runSVGO,
+  isEmptyColor,
+} from "@iconify/tools";
+
+const customIconSet = importDirectorySync("public/icons", { prefix: "icon" });
+
+customIconSet.forEachSync((name, type) => {
+  // Return if the file is not an icon
+  if (type !== "icon") {
+    return;
+  }
+
+  // Create an SVG icon from the file
+  const svg = customIconSet.toSVG(name);
+
+  if (!svg) {
+    customIconSet.remove(name);
+    return;
+  }
+
+  try {
+    cleanupSVG(svg);
+    runSVGO(svg);
+  } catch (err) {
+    console.error(`Error parsing ${name}:`, err);
+    customIconSet.remove(name);
+  }
+
+  // Add to the icon set
+  customIconSet.fromSVG(name, svg);
+
+  console.log(`added icon: ${name}`);
+});
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
@@ -93,6 +130,10 @@ export default {
     require("tailwindcss-motion"),
 
     // Iconify plugin
-    addDynamicIconSelectors(),
+    addDynamicIconSelectors({
+      iconSets: {
+        my: customIconSet.export(),
+      },
+    }),
   ],
 };

@@ -1,108 +1,23 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
-import Search from "astro-pagefind/components/Search";
+import Search from "@/components/Search.astro";
+import SearchDialog from "@/components/SearchDialog.astro";
+// import { SearchDialog } from "@/components/search-dialog";
 ---
 
 <MainLayout title="Playground">
   <h1 class="">Playground</h1>
 
   <!-- Test pagefind -->
+  <!-- <SearchDialog /> -->
 
-  <div>
+  <!-- <div>
     <Search
       id="search"
       className="pagefind-ui"
       uiOptions={{ showImages: false }}
     />
-  </div>
+  </div> -->
+
+  <Search />
 </MainLayout>
-
-<script>
-  // Get the search component
-  const search = document.getElementById("search");
-  if (!search) {
-    throw new Error("search component is not found");
-  }
-
-  function getElementByClassName(className: string) {
-    const elements = document.getElementsByClassName(className);
-
-    console.log(elements);
-
-    if (elements.length === 0) {
-      return null;
-    }
-
-    return elements[0];
-  }
-
-  // Get the clear button
-  const clearButton = getElementByClassName("pagefind-ui__search-clear");
-
-  const e = search.getElementsByTagName("button")[0];
-  console.log(e);
-
-  console.log(`clearButton: ${clearButton}`);
-</script>
-
-<style is:global>
-  .pagefind-ui {
-    width: 100%;
-    max-width: 500px;
-
-    color: #9cdcfe !important;
-    font-family: "Fira Code" !important;
-  }
-
-  .pagefind-ui > form > input {
-    background-color: rgba(24, 24, 24, 1) !important;
-    border: none !important;
-    outline: none;
-  }
-
-  /* Search icon */
-  .pagefind-ui > form::before {
-    background-color: #4ec9b0 !important;
-  }
-
-  /* Clear button */
-  .pagefind-ui > form > button {
-    display: flex;
-    flex-direction: column;
-    padding-left: 6px !important;
-    padding-right: 6px !important;
-    justify-content: center !important;
-    align-items: center !important;
-    outline: none !important;
-    background-color: transparent !important;
-
-    /* Hide the text "clear" */
-    color: transparent !important;
-  }
-
-  /* Clear button icon, a cross */
-  .pagefind-ui > form > button::before {
-    position: absolute;
-    width: 1.2rem;
-    height: 1.2rem;
-    content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 512 512"><path fill="none" stroke="%234ec9b0" stroke-miterlimit="10" stroke-width="32" d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192s192-86 192-192Z"/><path fill="none" stroke="%234ec9b0" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M320 320L192 192m0 128l128-128"/></svg>');
-  }
-
-  /* Search result */
-  .pagefind-ui__result {
-    padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
-    border-color: hsl(var(--border)) !important;
-  }
-
-  /* Search result title */
-  .pagefind-ui__result-title > * {
-    color: #4ec9b0 !important;
-  }
-
-  /* Highlighted text */
-  mark {
-    color: #c586c0 !important;
-    background-color: transparent !important;
-  }
-</style>

@@ -3,6 +3,10 @@ import { config } from "@/config";
 
 import { Logo } from "./logo";
 import NavigationLink from "./NavigationLink.astro";
+import searchIcon from "@/assets/search-icon.svg";
+import { Image } from "astro:assets";
+// import { SearchButton } from "@/components/search-button";
+import SearchButton from "./SearchButton.astro";
 ---
 
 <header
@@ -13,7 +17,7 @@ import NavigationLink from "./NavigationLink.astro";
   <Logo className="flex h-full flex-col justify-center" />
 
   <!-- Navigation -->
-  <nav class="flex h-full flex-row gap-8">
+  <nav class="flex h-full flex-row gap-16">
     <NavigationLink title="Home" href="/" />
     <NavigationLink
       title="Blog"
@@ -32,18 +36,14 @@ import NavigationLink from "./NavigationLink.astro";
         return false;
       }}
     />
-    <NavigationLink
-      title="Playground"
-      href="/playground"
-      isActive={(href, pathname) => {
-        if (!href) return false;
-
-        if (pathname.startsWith(href)) {
-          return true;
-        }
-
-        return false;
-      }}
-    />
+    <NavigationLink title="Playground" href="/playground" />
   </nav>
+
+  <!-- Search -->
+  <div class="flex h-full flex-col justify-center hover:cursor-pointer">
+    <!-- <SearchButton client:load /> -->
+    <SearchButton />
+  </div>
 </header>
+
+<style></style>
