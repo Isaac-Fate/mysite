@@ -59,6 +59,7 @@ const PaginationLink = ({
       <a
         aria-current={isActive ? "page" : undefined}
         className={cn(
+          "select-none",
           buttonVariants({
             variant: isActive ? "outline" : "ghost",
             size,
@@ -80,7 +81,7 @@ const PaginationLink = ({
       <a
         aria-current={isActive ? "page" : undefined}
         className={cn(
-          "hover:cursor-pointer",
+          "select-none hover:cursor-pointer",
           buttonVariants({
             variant: isActive ? "outline" : "ghost",
             size,
@@ -96,6 +97,7 @@ const PaginationLink = ({
     <a
       aria-current={isActive ? "page" : undefined}
       className={cn(
+        "select-none",
         buttonVariants({
           variant: isActive ? "outline" : "ghost",
           size,
@@ -119,7 +121,9 @@ const PaginationPrevious = ({
     {...props}
   >
     <ChevronLeft className="h-4 w-4" />
-    <span>Prev</span>
+
+    {/* Hide the text on small screens */}
+    <span className="hidden md:block">Prev</span>
   </PaginationLink>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
@@ -134,7 +138,9 @@ const PaginationNext = ({
     className={cn("gap-1 pr-2.5", className)}
     {...props}
   >
-    <span>Next</span>
+    {/* Hide the text on small screens */}
+    <span className="hidden md:block">Next</span>
+
     <ChevronRight className="h-4 w-4" />
   </PaginationLink>
 );

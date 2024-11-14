@@ -118,6 +118,10 @@ export default {
       fontFamily: {
         "fira-code": ['"Fira Code"'],
       },
+
+      screens: {
+        "card-landscape": "1140px",
+      },
     },
   },
   plugins: [

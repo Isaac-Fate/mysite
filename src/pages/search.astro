@@ -1,5 +1,8 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
+
+// If it is named Search than it will conflict with the search page
+// since my development environment is insensitive to cases
 import MySearch from "@/components/Search.astro";
 ---
 
@@ -7,5 +10,11 @@ import MySearch from "@/components/Search.astro";
   className="flex w-full flex-col items-center justify-center"
   title="Search"
 >
-  <MySearch />
+  <!-- <p class="sticky top-20 text-2xl">s</p> -->
+  <MySearch className="" />
 </MainLayout>
+
+<script>
+  // const url = window.location.href;
+  // window.location.replace();
+</script>

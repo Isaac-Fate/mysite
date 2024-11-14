@@ -48,6 +48,18 @@ const isActive = pathname.startsWith("/search");
   // Hotkey
   const hotkey = "/";
 
+  function search() {
+    // Get the search dialog
+    const searchDialog = document.getElementById("search-dialog");
+
+    console.log(searchDialog);
+
+    // Show the search dialog
+    searchDialog?.classList.remove("hidden");
+    searchDialog?.classList.remove("search-dialog-fade-out");
+    searchDialog?.classList.add("search-dialog-fade-in");
+  }
+
   document.addEventListener("keydown", (event) => {
     if (event.key === hotkey) {
       event.preventDefault();
@@ -74,8 +86,8 @@ const isActive = pathname.startsWith("/search");
       // Reset the icon to its original size
       searchButtonHotkeyIcon?.classList.remove("scale-150");
 
-      // Navigate to the search page smoothly
-      navigate("/search");
+      // Search the site
+      search();
     }
   });
 </script>

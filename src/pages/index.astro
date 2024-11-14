@@ -1,5 +1,7 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
+
+// Components
 import { Image } from "astro:assets";
 import {
   GitHubLink,
@@ -7,11 +9,12 @@ import {
   MediumLink,
   EmailLink,
 } from "@/components/social-media-link";
-
-import { getCollection } from "astro:content";
-
-import myPicture from "../assets/isaac-fei.jpg";
 import BlogPostCard from "@/components/BlogPostCard.astro";
+import ListTileLink from "@/components/ListTileLink.astro";
+
+// Utilities
+import { getCollection } from "astro:content";
+import myPicture from "../assets/isaac-fei.jpg";
 
 // Get all blog posts
 const posts = await getCollection("posts");
@@ -53,6 +56,32 @@ const recentBlogPosts = posts.slice(0, maxNumRecentBlogPosts);
     </div>
   </div>
 
+  <!-- Notebooks -->
+
+  <div class="-translate-x-4 text-2xl font-semibold">
+    <span class="text-code-variable">notebooks</span>
+    <span class="text-code-plain">=</span>
+    <span class="text-code-bracket-1">{"["}</span>
+  </div>
+
+  <p class="text-code-comment">{"// Mathematics Notebooks"}</p>
+
+  <ul class="flex flex-col gap-4">
+    <ListTileLink
+      title="Mathematical Analysis"
+      href="https://isaac-fate.github.io/mathematical-analysis/intro.html"
+    />
+    <ListTileLink
+      title="Linear Algebra"
+      href="https://isaac-fate.github.io/linear-algebra/intro.html"
+    />
+  </ul>
+
+  <!-- End of notebooks -->
+  <div class="-translate-x-4 text-2xl font-semibold">
+    <span class="text-code-bracket-1">{"]"}</span>
+  </div>
+
   <!-- Recent blog posts -->
   <div class="-translate-x-4 text-2xl font-semibold">
     <span class="text-code-variable">recent_posts</span>
@@ -77,7 +106,7 @@ const recentBlogPosts = posts.slice(0, maxNumRecentBlogPosts);
   <!-- Read more -->
   <!-- Navigate to the blog page -->
   <a
-    class="flex flex-row text-xl hover:cursor-pointer md:text-3xl"
+    class="flex flex-row text-xl hover:cursor-pointer md:text-2xl"
     href="/blog"
   >
     <span class="text-code-plain">...</span>

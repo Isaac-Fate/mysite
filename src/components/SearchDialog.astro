@@ -1,23 +1,86 @@
 ---
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-import { Overlay } from "@/components/overlay";
 import Search from "./Search.astro";
-
-// const
 ---
 
-<Overlay client:load>
-  <Search />
-</Overlay>
+<div
+  id="search-dialog"
+  class="fixed bottom-0 left-0 right-0 top-0 z-50 hidden bg-background md:bg-overlay md:backdrop-blur"
+>
+  <!-- For landscape wide screens -->
+  <div
+    id="search-dialog-modal"
+    class="hidden h-screen landscape:md:flex landscape:md:flex-col landscape:md:items-center landscape:md:justify-center"
+  >
+    <div
+      class="flex h-[50vh] max-h-[500px] min-h-[200px] w-2/3 min-w-[20rem] max-w-[500px] flex-col overflow-scroll rounded-md border-2 bg-card p-8 shadow-md md:w-3/4 md:max-w-[800px]"
+    >
+      <Search />
+    </div>
+  </div>
+
+  <!-- For protrait or narrow screens -->
+  <div
+    class="flex max-h-screen w-full flex-col overflow-auto p-4 landscape:md:hidden"
+  >
+    <div class="flex w-full flex-row justify-start">
+      <Search />
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("astro:page-load", async () => {
+    // Get the search dialog
+    const searchDialog = document.getElementById("search-dialog");
+
+    if (!searchDialog) {
+      return;
+    }
+
+    searchDialog.addEventListener("click", (event) => {
+      // Cast the event target to HTMLElement
+      const element = event.target as HTMLElement;
+
+      // Close the search dialog when the modal is clicked
+      if (element.id === "search-dialog-modal") {
+        searchDialog.classList.remove("search-dialog-fade-in");
+        searchDialog.classList.add("search-dialog-fade-out");
+        searchDialog.classList.add("hidden");
+      }
+    });
+  });
+</script>
+
+<style is:global>
+  .search-dialog-fade-in {
+    animation: fade-in 300ms ease-in-out forwards;
+  }
+
+  .search-dialog-fade-out {
+    animation: fade-out 300ms ease-in-out forwards;
+  }
+
+  @keyframes fade-in {
+    0% {
+      display: hidden;
+      opacity: 0;
+    }
+
+    100% {
+      display: block;
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade-out {
+    0% {
+      display: block;
+      opacity: 1;
+    }
+
+    100% {
+      display: hidden;
+      opacity: 0;
+    }
+  }
+</style>

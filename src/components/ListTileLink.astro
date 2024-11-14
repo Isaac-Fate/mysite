@@ -1,0 +1,29 @@
+---
+import { cn } from "@/lib/utils";
+
+interface Props {
+  className?: string;
+  title?: string;
+  href?: string;
+}
+
+const { className, title, href } = Astro.props;
+---
+
+<a
+  class={cn(
+    "group flex flex-row items-center justify-between gap-2 rounded-md bg-card p-4 font-bold hover:cursor-pointer hover:text-primary border-2 shadow-md ",
+    className,
+  )}
+  href={href}
+  target="_blank"
+>
+  {/* Title */}
+  <p class="">{title}</p>
+
+  {/* Trailing arrow */}
+  <span
+    class="icon-[weui--arrow-filled] h-[2rem] w-[2rem] text-2xl group-hover:motion-translate-x-loop-25"
+  >
+  </span>
+</a>
