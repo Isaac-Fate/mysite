@@ -17,7 +17,7 @@ import NavigationLink from "./NavigationLink.astro";
     <NavigationLink title="Home" href="/" />
     <NavigationLink
       title="Blog"
-      href="/blog"
+      href="/blog/1"
       isActive={(href, pathname) => {
         if (!href) return false;
 
@@ -32,6 +32,18 @@ import NavigationLink from "./NavigationLink.astro";
         return false;
       }}
     />
-    <NavigationLink title="Playground" href="/playground" />
+    <NavigationLink
+      title="Playground"
+      href="/playground"
+      isActive={(href, pathname) => {
+        if (!href) return false;
+
+        if (pathname.startsWith(href)) {
+          return true;
+        }
+
+        return false;
+      }}
+    />
   </nav>
 </header>

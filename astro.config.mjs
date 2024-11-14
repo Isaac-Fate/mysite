@@ -50,4 +50,7 @@ export default defineConfig({
   adapter: netlify({
     edgeMiddleware: true,
   }),
+  redirects: {
+    "/blog": "/blog/1",
+  },
 });
