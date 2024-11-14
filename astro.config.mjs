@@ -14,6 +14,9 @@ import mdx from "@astrojs/mdx";
 
 import astroExpressiveCode from "astro-expressive-code";
 
+// Pagefind integration
+import pagefind from "astro-pagefind";
+
 // https://astro.build/config
 export default defineConfig({
   image: {
@@ -39,10 +42,12 @@ export default defineConfig({
     }),
 
     mdx(),
+
+    pagefind(),
   ],
 
-  output: "server",
-  adapter: netlify({
-    edgeMiddleware: true,
-  }),
+  // output: "server",
+  // adapter: netlify({
+  //   edgeMiddleware: true,
+  // }),
 });

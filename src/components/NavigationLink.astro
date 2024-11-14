@@ -1,4 +1,6 @@
 ---
+import { cn } from "@/lib/utils";
+
 interface Props {
   title: string;
   href?: string;
@@ -29,7 +31,12 @@ const underlineWidth = "0.1rem";
 ---
 
 <a
-  class="relative flex h-full flex-col items-center justify-center font-semibold text-code-class"
+  class={cn(
+    "relative flex h-full flex-col items-center justify-center font-semibold ",
+    {
+      "text-code-class": isActive,
+    },
+  )}
   ,
   href={href}
   style={{}}

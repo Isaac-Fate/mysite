@@ -60,10 +60,10 @@ export default {
           string: "#CE9178",
           keyword: {
             declaration: "#5598d0",
-            control: "#C586C0",
+            control: "#c586c0",
           },
           variable: "#9CDCFE",
-          constant: "#4FC1FF",
+          constant: "#4fc1ff",
           comment: "#699755",
           bracket: {
             1: "#ffd602",

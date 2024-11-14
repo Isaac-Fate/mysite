@@ -6,7 +6,7 @@ import { getCollection } from "astro:content";
 import { z } from "zod";
 
 // Maximum number of blog posts per page
-const maxNumPostsPerPage = 3;
+const maxNumPostsPerPage = 2;
 
 // Get all blog posts
 const posts = await getCollection("posts");
@@ -21,7 +21,16 @@ posts.sort(
 // Count the number of pages
 const numPages = Math.ceil(posts.length / maxNumPostsPerPage);
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  // Maximum number of blog posts per page
+  const maxNumPostsPerPage = 2;
+
+  // Get all blog posts
+  const posts = await getCollection("posts");
+
+  // Count the number of pages
+  const numPages = Math.ceil(posts.length / maxNumPostsPerPage);
+
   // Generate page numbers
   const pageNumbers = Array.from({ length: numPages }, (_, i) => i + 1);
 
@@ -35,12 +44,6 @@ export function getStaticPaths() {
 
 // Get the page number
 let { pageNumber } = Astro.params;
-
-// The pathname is /blog
-// Redirect to the first page /blog/1
-if (pageNumber === undefined) {
-  pageNumber = 1;
-}
 
 // Try to parse pageNumber to an integer
 try {
@@ -59,7 +62,7 @@ try {
   console.error(error);
 
   // Redict to 404
-  Astro.response.status = 404;
+  return Astro.redirect("/404");
 }
 
 // Redict to 404
