@@ -1,11 +1,14 @@
 ---
+import type { CollectionEntry } from "astro:content";
+
 import { getCollection } from "astro:content";
 import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
-import { Image } from "astro:assets";
+// import { Image } from "astro:assets";
+import { Image } from "@unpic/astro";
 
 export async function getStaticPaths() {
   // Get blog posts collection
-  const posts = await getCollection("posts");
+  const posts: CollectionEntry<"posts">[] = await getCollection("posts");
 
   return posts.map((post) => ({
     params: { slug: post.slug },
@@ -35,13 +38,7 @@ if (!cover) {
   <h1>{post.data.title}</h1>
 
   <!-- Cover image -->
-  <Image
-    class="rounded-md border-2 shadow-md"
-    src={cover}
-    alt=""
-    width={1792}
-    height={1024}
-  />
+  <Image class="rounded-md border-2 shadow-md" src={cover} alt="Cover Image" />
 
   <!-- Main content -->
   <Content />
