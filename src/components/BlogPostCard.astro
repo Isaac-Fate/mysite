@@ -23,18 +23,18 @@ const posePathname = `/posts/${slug}`;
 ---
 
 <a
-  class="card-landscape:flex-row card-landscape:max-h-[13rem] bg-background-deep flex w-full flex-col overflow-clip rounded-md border-2 shadow-lg transition-transform delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-105 hover:cursor-pointer"
+  class="flex w-full flex-col overflow-clip rounded-md border-2 bg-panel shadow-lg transition-transform delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-105 hover:cursor-pointer card-landscape:max-h-[13rem] card-landscape:flex-row"
   href={posePathname}
 >
   {/* Cover image */}
   <div
-    class="card-landscape:border-r-2 card-landscape:w-1/2 card-landscape:h-full card-landscape:border-b-0 w-full overflow-clip border-b-2"
+    class="w-full overflow-clip border-b-2 card-landscape:h-full card-landscape:w-1/2 card-landscape:border-b-0 card-landscape:border-r-2"
   >
     <Image src={cover} alt="Blog Post Cover" width={1792} height={1024} />
   </div>
 
   {/* Details */}
-  <div class="card-landscape:w-1/2 flex flex-col gap-2 px-4 py-2">
+  <div class="flex flex-col gap-2 px-4 py-2 card-landscape:w-1/2">
     {/* Title */}
     <p class="w-full text-xl text-code-class md:text-2xl">
       {title}
@@ -48,7 +48,7 @@ const posePathname = `/posts/${slug}`;
 
     {/* Description */}
     <p
-      class="text-md card-landscape:overflow-auto text-code-variable md:text-lg"
+      class="text-md text-code-variable md:text-lg card-landscape:overflow-auto"
     >
       {description}
     </p>

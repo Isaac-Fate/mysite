@@ -6,21 +6,14 @@ interface Props {
 }
 
 const { className } = Astro.props;
-
-const pathname = Astro.url.pathname;
-const isActive = pathname.startsWith("/search");
 ---
 
-<a
+<div
   id="search-button"
   class={cn(
-    "relative bg-background flex flex-row rounded-md  px-[2rem] py-2 hover:cursor-pointer",
+    "relative bg-background flex flex-row rounded-md  px-[2rem] py-2 hover:cursor-pointer md:hover:ring-1  group ease-in-out transition duration-300 hover:ring-code-class ",
     className,
-    {
-      "search-button-active": isActive,
-    },
   )}
-  href="/search"
 >
   {/* Search icon */}
   <div
@@ -30,35 +23,58 @@ const isActive = pathname.startsWith("/search");
   </div>
 
   {/* Text */}
-  <p>Search</p>
+  <p class="md:group-hover:text-code-function">Search</p>
 
   {/* Slash key icon */}
   <div
     id="search-button-hotkey-icon"
-    class="flex h-full translate-x-[1rem] flex-col justify-center text-code-class duration-300"
+    class="hidden h-full translate-x-[1rem] flex-col justify-center text-code-class duration-300 md:flex"
     ,
   >
     <span class="icon-[solar--slash-square-linear]"></span>
   </div>
-</a>
+</div>
 
 <script>
-  import { navigate } from "astro:transitions/client";
+  import { openSearchDialog } from "@/utils";
 
   // Hotkey
   const hotkey = "/";
 
   function search() {
-    // Get the search dialog
-    const searchDialog = document.getElementById("search-dialog");
+    // Open the search dialog
+    openSearchDialog();
 
-    console.log(searchDialog);
+    // Get the search inputs
+    const searchInputs = document.getElementsByClassName(
+      "pagefind-ui__search-input",
+    ) as HTMLCollectionOf<HTMLInputElement>;
 
-    // Show the search dialog
-    searchDialog?.classList.remove("hidden");
-    searchDialog?.classList.remove("search-dialog-fade-out");
-    searchDialog?.classList.add("search-dialog-fade-in");
+    for (const searchInput of searchInputs) {
+      // Gain focus
+      searchInput.focus();
+    }
+
+    // Get the one and only search input
+    const searchInput = searchInputs[0] as HTMLInputElement;
+
+    // Gain focus
+    searchInput.focus();
   }
+
+  document.addEventListener("astro:page-load", async () => {
+    // Get the search button
+    const searchButton = document.getElementById("search-button");
+
+    if (!searchButton) {
+      return;
+    }
+
+    // Handle click
+    searchButton.addEventListener("click", () => {
+      search();
+    });
+  });
 
   document.addEventListener("keydown", (event) => {
     if (event.key === hotkey) {
@@ -91,20 +107,3 @@ const isActive = pathname.startsWith("/search");
     }
   });
 </script>
-
-<style>
-  .search-button-active {
-    animation: ring-pulse 1.5s infinite ease-in-out alternate-reverse;
-  }
-
-  @keyframes ring-pulse {
-    0% {
-      box-shadow: none;
-    }
-
-    100% {
-      box-shadow: 0 0 0 1px #4ec9b0;
-      color: #4ec9b0;
-    }
-  }
-</style>

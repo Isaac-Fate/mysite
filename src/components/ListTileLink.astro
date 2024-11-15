@@ -5,6 +5,7 @@ interface Props {
   className?: string;
   title?: string;
   href?: string;
+  newTab?: boolean;
 }
 
 const { className, title, href } = Astro.props;
@@ -12,11 +13,11 @@ const { className, title, href } = Astro.props;
 
 <a
   class={cn(
-    "group flex flex-row items-center justify-between gap-2 rounded-md bg-card p-4 font-bold hover:cursor-pointer hover:text-primary border-2 shadow-md ",
+    "group flex flex-row items-center justify-between gap-2 rounded-md bg-panel p-4 font-bold hover:cursor-pointer hover:text-primary border-2 shadow-md ",
     className,
   )}
   href={href}
-  target="_blank"
+  target={Astro.props.newTab ? "_blank" : "_self"}
 >
   {/* Title */}
   <p class="">{title}</p>

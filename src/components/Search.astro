@@ -16,8 +16,6 @@ const { className } = Astro.props;
 />
 
 <script>
-  import { sleep } from "@/lib/utils";
-
   function modify() {
     // Get the search form
     const searchForm = document.getElementsByClassName("pagefind-ui__form");
@@ -99,22 +97,6 @@ const { className } = Astro.props;
     // Attach the clear button to the search input container
     searchInputContainer.appendChild(clearButton);
   }
-
-  document.addEventListener("astro:page-load", async () => {
-    // Get the search input
-    const searchInputs = document.getElementsByClassName(
-      "pagefind-ui__search-input",
-    );
-
-    // Get the one and only search input
-    const searchInput = searchInputs[0] as HTMLInputElement;
-
-    // Delay for a bit
-    await sleep(100);
-
-    // Gain focus
-    searchInput.focus();
-  });
 </script>
 
 <style is:global>
@@ -162,10 +144,14 @@ const { className } = Astro.props;
 
   /* Search input */
   .pagefind-ui__search-input {
-    background-color: rgba(24, 24, 24, 1) !important;
+    background-color: hsl(var(--background)) !important;
     border: none !important;
     outline: none;
     padding-left: 3rem !important;
+  }
+
+  .pagefind-ui__search-input:focus {
+    outline: #4ec9b0 solid 1px !important;
   }
 
   /* Pagefind UI search icon */

@@ -1,3 +1,3 @@
-import { notFound } from "./redirect";
+import { getSearchDialog, openSearchDialog, closeSearchDialog } from "./search";
 
-export { notFound };
+export { getSearchDialog, openSearchDialog, closeSearchDialog };

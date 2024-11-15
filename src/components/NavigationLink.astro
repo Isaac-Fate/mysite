@@ -1,13 +1,8 @@
 ---
 import { cn } from "@/lib/utils";
+import type { NavigationLinkConfig } from "@/models";
 
-interface Props {
-  title: string;
-  href?: string;
-  isActive?:
-    | boolean
-    | ((href: string | undefined, pathname: string) => boolean);
-}
+interface Props extends NavigationLinkConfig {}
 
 const { title, href } = Astro.props;
 
