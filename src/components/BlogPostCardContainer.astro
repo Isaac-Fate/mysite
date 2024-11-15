@@ -4,7 +4,7 @@ import type { CollectionEntry } from "astro:content";
 import BlogPostCard from "./BlogPostCard.astro";
 
 interface Props {
-  blogPosts: CollectionEntry<"blogPost">[];
+  blogPosts: CollectionEntry<"posts">[];
 }
 
 const { blogPosts } = Astro.props;
