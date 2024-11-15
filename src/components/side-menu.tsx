@@ -29,9 +29,12 @@ export function SideMenu(props: SideMenuProps) {
         </Button>
       </SheetTrigger>
 
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle className="text-code-class">Where to?</SheetTitle>
+      <SheetContent className="bg-panel p-0">
+        <SheetHeader className="border-b-2 bg-panel p-6">
+          <SheetTitle>
+            <span className="text-code-function">navigateTo</span>
+            <span className="text-code-bracket-1">{"()"}</span>
+          </SheetTitle>
           {/* <SheetDescription>
             Make changes to your profile here. Click save when you're done.
           </SheetDescription> */}
@@ -40,7 +43,7 @@ export function SideMenu(props: SideMenuProps) {
         {/* Main content */}
 
         {/* Navigation links */}
-        <nav className="mt-8 flex flex-col gap-4">
+        <nav className="flex h-full w-full flex-col gap-4 bg-background p-6">
           {config.navigationLinkConfigs.map((navigationLinkConfig, index) => (
             <NavigationLink key={index} {...navigationLinkConfig} />
           ))}
@@ -94,9 +97,9 @@ function NavigationLink(props: NavigationLinkConfig) {
       href={props.href}
       key={props.href}
     >
-      <span className="text-code-tag">{"< "}</span>
+      <span className="text-code-tag">{"<"}</span>
       <span>{props.title}</span>
-      <span className="text-code-tag">{" />"}</span>
+      <span className="text-code-tag">{"/>"}</span>
     </a>
   );
 }

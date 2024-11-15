@@ -1,21 +1,23 @@
 ---
+import type { CollectionEntry } from "astro:content";
+
 import { Image } from "astro:assets";
 import { DateDisplay } from "./date-display";
 
 interface Props {
-  slug: string;
-  title: string;
-  description: string;
-  createdAt: Date;
-  cover?: string;
+  blogPost: CollectionEntry<"posts">;
 }
 
-const { slug, title, description, createdAt } = Astro.props;
+const { blogPost } = Astro.props;
+const {
+  slug,
+  data: { title, description, createdAt, cover },
+} = blogPost;
 
 // Get the cover image path
-let cover = Astro.props.cover;
-if (!cover) {
-  cover = `/images/${slug}/cover.png`;
+let coverPath = cover;
+if (!coverPath) {
+  coverPath = `/images/${slug}/cover.png`;
 }
 
 // Infer the blog post pathname from the slug
@@ -23,33 +25,32 @@ const posePathname = `/posts/${slug}`;
 ---
 
 <a
-  class="flex w-full flex-col overflow-clip rounded-md border-2 bg-panel shadow-lg transition-transform delay-150 duration-300 ease-in-out hover:-translate-y-2 hover:scale-105 hover:cursor-pointer card-landscape:max-h-[13rem] card-landscape:flex-row"
+  class="wide-for-grid-2:h-[24rem] wide-for-grid-2:w-[24rem] flex h-[20rem] w-[20rem] flex-col overflow-clip rounded-md border-2 bg-panel shadow-md transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:scale-105 hover:cursor-pointer"
   href={posePathname}
 >
   {/* Cover image */}
-  <div
-    class="w-full overflow-clip border-b-2 card-landscape:h-full card-landscape:w-1/2 card-landscape:border-b-0 card-landscape:border-r-2"
-  >
-    <Image src={cover} alt="Blog Post Cover" width={1792} height={1024} />
+  <div class="h-3/5 w-full overflow-clip border-b-2">
+    <Image
+      class="h-full w-full object-cover"
+      src={coverPath}
+      alt="Blog Post Cover"
+      inferSize
+    />
   </div>
 
-  {/* Details */}
-  <div class="flex flex-col gap-2 px-4 py-2 card-landscape:w-1/2">
-    {/* Title */}
-    <p class="w-full text-xl text-code-class md:text-2xl">
+  <!-- Details -->
+  <div class="flex h-2/5 flex-col gap-2 px-4 py-2">
+    <!-- Title -->
+    <p class="text:sm w-full text-code-class md:text-base">
       {title}
     </p>
 
-    {/* Creation date */}
-    <DateDisplay
-      className="text-xs text-code-string md:text-sm"
-      date={createdAt}
-    />
+    <!-- Creation date -->
+    <DateDisplay className="text-xs text-code-string" date={createdAt} />
 
-    {/* Description */}
-    <p
-      class="text-md text-code-variable md:text-lg card-landscape:overflow-auto"
-    >
+    <!-- Description -->
+    <!-- Display at most 2 lines with trailing ellipsis if it is too long -->
+    <p class="line-clamp-2 overflow-hidden text-ellipsis">
       {description}
     </p>
   </div>

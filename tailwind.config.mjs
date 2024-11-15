@@ -7,35 +7,39 @@ import {
   isEmptyColor,
 } from "@iconify/tools";
 
-const customIconSet = importDirectorySync("public/icons", { prefix: "icon" });
+function createCustomIconSet() {
+  const customIconSet = importDirectorySync("public/icons", { prefix: "icon" });
 
-customIconSet.forEachSync((name, type) => {
-  // Return if the file is not an icon
-  if (type !== "icon") {
-    return;
-  }
+  customIconSet.forEachSync((name, type) => {
+    // Return if the file is not an icon
+    if (type !== "icon") {
+      return;
+    }
 
-  // Create an SVG icon from the file
-  const svg = customIconSet.toSVG(name);
+    // Create an SVG icon from the file
+    const svg = customIconSet.toSVG(name);
 
-  if (!svg) {
-    customIconSet.remove(name);
-    return;
-  }
+    if (!svg) {
+      customIconSet.remove(name);
+      return;
+    }
 
-  try {
-    cleanupSVG(svg);
-    runSVGO(svg);
-  } catch (err) {
-    console.error(`Error parsing ${name}:`, err);
-    customIconSet.remove(name);
-  }
+    try {
+      cleanupSVG(svg);
+      runSVGO(svg);
+    } catch (err) {
+      console.error(`Error parsing ${name}:`, err);
+      customIconSet.remove(name);
+    }
 
-  // Add to the icon set
-  customIconSet.fromSVG(name, svg);
+    // Add to the icon set
+    customIconSet.fromSVG(name, svg);
 
-  console.log(`added icon: ${name}`);
-});
+    console.log(`added icon: ${name}`);
+  });
+
+  return customIconSet;
+}
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -122,6 +126,7 @@ export default {
 
       screens: {
         "card-landscape": "1140px",
+        "wide-for-grid-2": "1044px",
       },
     },
   },
@@ -137,8 +142,11 @@ export default {
     // Iconify plugin
     addDynamicIconSelectors({
       iconSets: {
-        my: customIconSet.export(),
+        my: createCustomIconSet().export(),
       },
     }),
+
+    // Glitch text
+    require("@designbycode/tailwindcss-text-glitch"),
   ],
 };

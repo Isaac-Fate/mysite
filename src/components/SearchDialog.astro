@@ -24,22 +24,19 @@ import Search from "./Search.astro";
     class="flex max-h-screen w-full flex-col overflow-auto p-4 landscape:md:hidden"
   >
     <div class="flex w-full flex-col justify-between gap-2">
-      <!-- Cancel button -->
+      <!-- Search -->
+      <Search />
 
-      <div class="fixed left-0 right-0 top-0 z-50 h-14 bg-background p-2">
+      <!-- Cancel button -->
+      <div class="fixed bottom-0 right-0 z-50 h-14 p-2">
         <Button
           id="search-dialog-cancel-button"
-          className="gap-4 text-code-class"
+          className="gap-4 bg-panel text-code-class"
           variant={"outline"}
         >
           <span class="icon-[lets-icons--back]"></span>
           <p>Cancel</p>
         </Button>
-      </div>
-
-      <!-- Search -->
-      <div class="mt-12">
-        <Search />
       </div>
 
       <!-- Cancel button -->

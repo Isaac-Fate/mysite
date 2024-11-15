@@ -1,4 +1,8 @@
 ---
+// Models
+import type { CollectionEntry } from "astro:content";
+
+// Layout
 import MainLayout from "@/layouts/MainLayout.astro";
 
 // Components
@@ -11,26 +15,26 @@ import {
 } from "@/components/social-media-link";
 import BlogPostCard from "@/components/BlogPostCard.astro";
 import ListTileLink from "@/components/ListTileLink.astro";
+import BlogPostCardContainer from "@/components/BlogPostCardContainer.astro";
 
 // Utilities
 import { getCollection } from "astro:content";
 import myPicture from "../assets/isaac-fei.jpg";
 
-// Get all blog posts
-const posts = await getCollection("posts");
+// Get all blog posts from /content/posts
+const blogPosts: CollectionEntry<"posts">[] = await getCollection("posts");
 
 // Sort blog posts by creation date in descending order
-posts.sort(
-  // @ts-ignore
-  (post1, post2) =>
-    post2.data.createdAt.valueOf() - post1.data.createdAt.valueOf(),
+blogPosts.sort(
+  (blogPost1, blogPost2) =>
+    blogPost2.data.createdAt.valueOf() - blogPost1.data.createdAt.valueOf(),
 );
 
 // Maximum number of recent blog posts
 const maxNumRecentBlogPosts = 5;
 
 // Get the recent blog posts
-const recentBlogPosts = posts.slice(0, maxNumRecentBlogPosts);
+const recentBlogPosts = blogPosts.slice(0, maxNumRecentBlogPosts);
 ---
 
 <MainLayout className="h-full" title="Isaac Fei">
@@ -84,24 +88,13 @@ const recentBlogPosts = posts.slice(0, maxNumRecentBlogPosts);
 
   <!-- Recent blog posts -->
   <div class="-translate-x-4 text-2xl font-semibold">
-    <span class="text-code-variable">recent_posts</span>
+    <span class="text-code-variable">recentPosts</span>
     <span class="text-code-plain">=</span>
     <span class="text-code-bracket-1">{"["}</span>
   </div>
 
   <!-- Blog post cards -->
-  {
-    // @ts-ignore
-    recentBlogPosts.map((post) => (
-      <BlogPostCard
-        slug={post.slug}
-        title={post.data.title}
-        description={post.data.description}
-        createdAt={post.data.createdAt}
-        cover={post.data.cover}
-      />
-    ))
-  }
+  <BlogPostCardContainer blogPosts={recentBlogPosts} />
 
   <!-- Read more -->
   <!-- Navigate to the blog page -->
