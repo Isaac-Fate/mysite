@@ -2,10 +2,11 @@
 import type { CollectionEntry } from "astro:content";
 
 import { Image } from "astro:assets";
+import { Skeleton } from "./ui/skeleton";
 import { DateDisplay } from "./date-display";
 
 interface Props {
-  blogPost: CollectionEntry<"posts">;
+  blogPost: CollectionEntry<"blogPost">;
 }
 
 const { blogPost } = Astro.props;
@@ -25,21 +26,25 @@ const posePathname = `/posts/${slug}`;
 ---
 
 <a
-  class="wide-for-grid-2:h-[24rem] wide-for-grid-2:w-[24rem] flex h-[20rem] w-[20rem] flex-col overflow-clip rounded-md border-2 bg-panel shadow-md transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:scale-105 hover:cursor-pointer"
+  class="wide-for-grid-2:h-[24rem] wide-for-grid-2:w-[24rem] flex h-auto w-full flex-col overflow-clip rounded-md border-2 bg-panel shadow-md transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:scale-105 hover:cursor-pointer"
   href={posePathname}
 >
   {/* Cover image */}
-  <div class="h-3/5 w-full overflow-clip border-b-2">
+  <div
+    class="wide-for-grid-2:h-3/5 relative h-[14rem] w-full overflow-clip border-b-2"
+  >
     <Image
       class="h-full w-full object-cover"
       src={coverPath}
       alt="Blog Post Cover"
       inferSize
     />
+
+    <Skeleton className="absolute h-full w-full object-cover" />
   </div>
 
   <!-- Details -->
-  <div class="flex h-2/5 flex-col gap-2 px-4 py-2">
+  <div class="wide-for-grid-2:h-2/5 flex flex-col gap-2 px-4 py-2">
     <!-- Title -->
     <p class="text:sm w-full text-code-class md:text-base">
       {title}
@@ -50,7 +55,7 @@ const posePathname = `/posts/${slug}`;
 
     <!-- Description -->
     <!-- Display at most 2 lines with trailing ellipsis if it is too long -->
-    <p class="line-clamp-2 overflow-hidden text-ellipsis">
+    <p class="wide-for-grid-2:line-clamp-2 overflow-hidden text-ellipsis">
       {description}
     </p>
   </div>

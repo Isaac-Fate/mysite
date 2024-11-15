@@ -22,7 +22,7 @@ import { getCollection } from "astro:content";
 import myPicture from "../assets/isaac-fei.jpg";
 
 // Get all blog posts from /content/posts
-const blogPosts: CollectionEntry<"posts">[] = await getCollection("posts");
+const blogPosts: CollectionEntry<"blogPost">[] = await getCollection("posts");
 
 // Sort blog posts by creation date in descending order
 blogPosts.sort(
