@@ -38,7 +38,12 @@ if (!cover) {
   <h1>{post.data.title}</h1>
 
   <!-- Cover image -->
-  <Image class="rounded-md border-2 shadow-md" src={cover} alt="Cover Image" />
+  <Image
+    class="rounded-md border-2 shadow-md"
+    src={cover}
+    alt="Cover Image"
+    placeholder="blurhash"
+  />
 
   <!-- Main content -->
   <Content />
