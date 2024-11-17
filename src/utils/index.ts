@@ -1,3 +1,13 @@
-import { getSearchDialog, openSearchDialog, closeSearchDialog } from "./search";
+import {
+  getSearchDialog,
+  openSearchDialog,
+  closeSearchDialog,
+  addSearchCancelButtons,
+} from "./search";
 
-export { getSearchDialog, openSearchDialog, closeSearchDialog };
+export {
+  getSearchDialog,
+  openSearchDialog,
+  closeSearchDialog,
+  addSearchCancelButtons,
+};

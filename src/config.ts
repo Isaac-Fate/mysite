@@ -1,10 +1,12 @@
-import { NavigationLinkConfigSchema } from "@/models";
-
 import { z } from "zod";
+import { NavigationLinkConfigSchema } from "@/models";
 
 const ProjectConfigSchema = z.object({
   headerHeight: z.number().or(z.string()),
   navigationLinkConfigs: z.array(NavigationLinkConfigSchema),
+  search: z.object({
+    searchInputHeight: z.number().or(z.string()),
+  }),
 });
 
 export const config = ProjectConfigSchema.parse({
@@ -35,9 +37,8 @@ export const config = ProjectConfigSchema.parse({
         return false;
       },
     },
-    // {
-    //   title: "Playground",
-    //   href: "/playground",
-    // },
   ],
+  search: {
+    searchInputHeight: "3rem",
+  },
 });

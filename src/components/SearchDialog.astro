@@ -1,5 +1,4 @@
 ---
-import { Button } from "./ui/button";
 import Search from "./Search.astro";
 ---
 
@@ -13,7 +12,10 @@ import Search from "./Search.astro";
     class="hidden h-screen landscape:md:flex landscape:md:flex-col landscape:md:items-center landscape:md:justify-center"
   >
     <div
-      class="flex h-[50vh] max-h-[500px] min-h-[200px] w-2/3 min-w-[20rem] max-w-[500px] flex-col overflow-scroll rounded-md border-2 bg-panel p-8 shadow-md md:w-3/4 md:max-w-[800px]"
+      class="flex w-2/3 min-w-[20rem] max-w-[500px] flex-col rounded-md border-2 bg-panel p-8 shadow-md md:w-3/4 md:max-w-[800px]"
+      style={{
+        height: "calc(20rem + 2rem * 2)",
+      }}
     >
       <Search />
     </div>
@@ -26,33 +28,16 @@ import Search from "./Search.astro";
     <div class="flex w-full flex-col justify-between gap-2">
       <!-- Search -->
       <Search />
-
-      <!-- Cancel button -->
-      <div class="fixed bottom-0 right-0 z-50 h-14 p-2">
-        <Button
-          id="search-dialog-cancel-button"
-          className="gap-4 bg-panel text-code-class"
-          variant={"outline"}
-        >
-          <span class="icon-[lets-icons--back]"></span>
-          <p>Cancel</p>
-        </Button>
-      </div>
-
-      <!-- Cancel button -->
-      <!-- <div class="flex flex-col justify-start p-2">
-        <Button
-          id="search-dialog-cancel-button"
-          className="sticky top-0 text-code-class"
-          variant={"outline"}>Cancel</Button
-        >
-      </div> -->
     </div>
   </div>
 </div>
 
 <script>
-  import { getSearchDialog, closeSearchDialog } from "@/utils";
+  import {
+    getSearchDialog,
+    closeSearchDialog,
+    addSearchCancelButtons,
+  } from "@/utils";
 
   // Hit Escape key to close the search dialog
   document.addEventListener("keyup", (event) => {
@@ -80,30 +65,7 @@ import Search from "./Search.astro";
       };
     }
 
-    // Set up cancel button
-    const cancelButton = document.getElementById("search-dialog-cancel-button");
-
-    if (cancelButton) {
-      cancelButton.onclick = () => {
-        // Close the search dialog
-        closeSearchDialog();
-      };
-    }
-
-    // Set up scroll to top button
-    const scrollToTopButton = document.getElementById(
-      "search-dialog-scroll-to-top-button",
-    );
-
-    // if (scrollToTopButton) {
-    //   scrollToTopButton.onclick = () => {
-    //     // Scroll to top
-    //     searchDialog?.scrollTo({
-    //       top: 0,
-    //       behavior: "smooth",
-    //     });
-    //   };
-    // }
+    // addSearchCancelButtons();
   });
 </script>
 

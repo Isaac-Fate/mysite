@@ -1,6 +1,8 @@
 ---
-import { cn } from "@/lib/utils";
 import PagefindSearch from "astro-pagefind/components/Search";
+
+import { cn } from "@/lib/utils";
+import { config } from "@/config";
 
 interface Props {
   className?: string;
@@ -16,105 +18,70 @@ const { className } = Astro.props;
 />
 
 <script>
-  function modify() {
-    // Get the search form
-    const searchForm = document.getElementsByClassName("pagefind-ui__form");
+  import { addSearchCancelButtons } from "@/utils";
 
-    if (searchForm.length === 0) {
-      return;
-    }
-
-    // Get the one and only search form
-    const searchFormElement = searchForm[0] as HTMLFormElement;
-
-    // Create a search input container
-    const searchInputContainer = document.createElement("div");
-
-    // Set ID
-    searchInputContainer.id = "search-input-container";
-
-    // Attach the search input container to the search form
-    // Put it at the first position
-    searchFormElement.insertBefore(
-      searchInputContainer,
-      searchFormElement.firstChild,
-    );
-
-    // Create a search icon container
-    const searchIconContainer = document.createElement("div");
-
-    // Set ID
-    searchIconContainer.id = "search-icon-container";
-
-    // Create a search icon
-    const searchIcon = document.createElement("span");
-
-    // Set ID
-    searchIcon.id = "search-icon";
-
-    // Set class
-    searchIcon.classList.add("icon-[mdi--search]");
-
-    // Put the search icon into the container
-    searchIconContainer.appendChild(searchIcon);
-
-    // Add the search icon container
-    searchInputContainer.appendChild(searchIconContainer);
-
-    // Get the search input
-    const searchInputs = document.getElementsByClassName(
-      "pagefind-ui__search-input",
-    );
-
-    if (searchInputs.length === 0) {
-      return;
-    }
-
-    // Get the one and only search input
-    const searchInput = searchInputs[0] as HTMLInputElement;
-
-    // Detach the search input from its parent
-    searchInput.parentElement?.removeChild(searchInput);
-
-    // Attach the search input to the search input container
-    searchInputContainer.appendChild(searchInput);
-
-    // Get the clear button
-    const clearButtons = document.getElementsByClassName(
-      "pagefind-ui__search-clear",
-    );
-
-    if (clearButtons.length === 0) {
-      return;
-    }
-
-    // Get the one and only clear button
-    const clearButton = clearButtons[0] as HTMLButtonElement;
-
-    // Detach the clear button from its parent
-    clearButton.parentElement?.removeChild(clearButton);
-
-    // Attach the clear button to the search input container
-    searchInputContainer.appendChild(clearButton);
-  }
+  document.addEventListener("astro:page-load", async () => {
+    addSearchCancelButtons();
+  });
 </script>
 
 <style is:global>
-  #search {
-    /* overflow: auto !important; */
+  /* Search cancel button */
+  .search-cancel-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 5rem;
+    height: 3rem;
+
+    border-width: 2px;
+    border-style: solid;
+    border-color: hsl(var(--border));
+    border-radius: 0.375rem;
+
+    padding: 0.5rem;
+  }
+
+  .search-cancel-button:hover {
+    cursor: pointer;
+  }
+
+  /* Background for the cancel button */
+  .search-cancel-button-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: calc(3rem + 1rem);
+
+    background-color: hsl(var(--background));
+    z-index: 0;
+
+    @media screen and (min-width: 768px) {
+      background-color: hsl(var(--panel));
+    }
   }
 
   .pagefind-ui {
     /* position: relative !important; */
     width: 100% !important;
+    min-height: 3rem !important;
 
     color: #9cdcfe !important;
     font-family: "Fira Code" !important;
+    font-weight: normal !important;
   }
 
   /* Search form */
   .pagefind-ui__form {
-    /* position: absolute !important; */
+    position: relative !important;
   }
 
   /* Search input container */
@@ -144,10 +111,15 @@ const { className } = Astro.props;
 
   /* Search input */
   .pagefind-ui__search-input {
+    position: absolute !important;
+    width: calc(100% - 5rem - 1rem) !important;
+    height: 3rem !important;
     background-color: hsl(var(--background)) !important;
     border: none !important;
+    border-radius: 0.375rem !important;
     outline: none;
     padding-left: 3rem !important;
+    z-index: 1 !important;
   }
 
   .pagefind-ui__search-input:focus {
@@ -179,9 +151,38 @@ const { className } = Astro.props;
   /* Clear button icon, a cross */
   .pagefind-ui__search-clear::before {
     position: absolute;
+    top: 0.75rem;
+    right: calc(5rem + 1rem + 0.75rem);
+
     width: 1.2rem;
     height: 1.2rem;
+
     content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 512 512"><path fill="none" stroke="%234ec9b0" stroke-miterlimit="10" stroke-width="32" d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192s192-86 192-192Z"/><path fill="none" stroke="%234ec9b0" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M320 320L192 192m0 128l128-128"/></svg>');
+
+    z-index: 1 !important;
+  }
+
+  /* Drawer */
+  .pagefind-ui__drawer {
+    height: 90vh !important;
+
+    overflow: auto !important;
+
+    /**
+     * Add border radius at the top to match the search input
+     * Avoid showing the content when the search results are scrolled up
+     */
+    border-top-left-radius: 0.375rem !important;
+    border-top-right-radius: 0.375rem !important;
+
+    @media screen and (min-width: 768px) {
+      height: 20rem !important;
+    }
+  }
+
+  /* Search results area */
+  .pagefind-ui__results-area {
+    margin-top: 3rem !important;
   }
 
   /* Search result */

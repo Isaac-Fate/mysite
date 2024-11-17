@@ -98,3 +98,9 @@
   font-style: normal;
   font-display: swap;
 }
+
+@layer base {
+  :root {
+    --panel: 0 0% 9%;
+  }
+}

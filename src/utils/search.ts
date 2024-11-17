@@ -45,6 +45,9 @@ export function openSearchDialog() {
 
   // Play fade-in animation and remove hidden
   searchDialog.classList.add("search-dialog-fade-in");
+
+  // Add search cancel buttons
+  addSearchCancelButtons();
 }
 
 export async function closeSearchDialog() {
@@ -67,4 +70,49 @@ export async function closeSearchDialog() {
 
   // Clear the search inputs
   clearSearchInputs();
+}
+
+export function addSearchCancelButtons() {
+  // Find the search forms
+  const searchForms = document.getElementsByClassName("pagefind-ui__form");
+
+  for (const searchForm of searchForms) {
+    // Check if there already exists a cancel button
+    const existingCancelButton = searchForm.querySelector(
+      ".search-cancel-button",
+    );
+
+    if (existingCancelButton) {
+      return;
+    }
+
+    // Create a container for the cancel button
+    const cancelButtonContainer = document.createElement("div");
+
+    // Set class name
+    cancelButtonContainer.className = "search-cancel-button-container";
+
+    // Create a cancel button
+    const cancelButton = document.createElement("button");
+
+    // Set class name
+    cancelButton.className = "search-cancel-button";
+
+    // Set text content
+    cancelButton.textContent = "Cancel";
+
+    // Set up the click event handler
+    cancelButton.onclick = () => {
+      console.log("cancel");
+
+      // Close the search dialog
+      closeSearchDialog();
+    };
+
+    // Attach the cancel button to the cancel button container
+    cancelButtonContainer.appendChild(cancelButton);
+
+    // Attach the cancel button container to the search form
+    searchForm.appendChild(cancelButtonContainer);
+  }
 }
