@@ -5,6 +5,7 @@ import { getCollection } from "astro:content";
 import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
 // import { Image } from "astro:assets";
 import { Image } from "@unpic/astro";
+import BlogPostCommmentSection from "@/components/BlogPostCommmentSection.astro";
 
 export async function getStaticPaths() {
   // Get blog posts collection
@@ -47,4 +48,7 @@ if (!cover) {
 
   <!-- Main content -->
   <Content />
+
+  <!-- Comments -->
+  <BlogPostCommmentSection />
 </BlogPostLayout>
