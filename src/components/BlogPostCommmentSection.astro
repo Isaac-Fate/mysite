@@ -2,7 +2,10 @@
 
 ---
 
-<section class="mt-10 w-full">
+<section
+  id="blog-post-comment-section"
+  class="blog-post-comment-section mt-10 w-full"
+>
   <!-- Divider -->
   <div class="h-1 w-full rounded-md bg-panel"></div>
 
@@ -10,11 +13,10 @@
   <p class="text-2xl font-bold text-code-class">Comments</p>
 
   <!-- Giscus -->
-  <div class="giscus mt-8"></div>
+  <div id="giscus-container" class="giscus mt-8"></div>
 </section>
 
 <script
-  is:inline
   src="https://giscus.app/client.js"
   data-repo="Isaac-Fate/mysite"
   data-repo-id="R_kgDONOXprg"
@@ -29,3 +31,77 @@
   data-lang="en"
   crossorigin="anonymous"
   async></script>
+
+<script>
+  function loadGiscus() {
+    const giscusContainer = document.getElementById("giscus-container");
+
+    if (!giscusContainer) {
+      console.error("Giscus container not found");
+      return;
+    }
+
+    // Clear the existing Giscus iframe if it exists
+    giscusContainer.innerHTML = "";
+
+    // Create a new script tag
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", "Isaac-Fate/mysite");
+    script.setAttribute("data-repo-id", "R_kgDONOXprg");
+    script.setAttribute("data-category", "Blog Post Comments");
+    script.setAttribute("data-category-id", "DIC_kwDONOXprs4CkXRw");
+    script.setAttribute("data-mapping", "url");
+    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-emit-metadata", "0");
+    script.setAttribute("data-input-position", "bottom");
+    script.setAttribute(
+      "data-theme",
+      "https://isaacfei.netlify.app/themes/giscus.css",
+    );
+    script.setAttribute("crossorigin", "anonymous");
+    script.async = true;
+
+    // Append the script to the container
+    giscusContainer.appendChild(script);
+  }
+
+  document
+    .getElementById("reloadGiscus")
+    ?.addEventListener("click", loadGiscus);
+
+  // Initial load
+
+  document.addEventListener("astro:page-load", async () => {
+    loadGiscus();
+  });
+</script>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        console.log("comment section is visible");
+
+        // Check if the Giscus frame exists
+        const giscusFrames = document.getElementsByClassName("giscus-frame");
+
+        // Refresh the page if the Giscus frame does not exist
+        if (giscusFrames.length === 0) {
+          console.warn("Giscus frame does not exist");
+        }
+      }
+    });
+  });
+
+  document.addEventListener("astro:page-load", async () => {
+    // Get the comment sections
+    const commentSections = document.getElementsByClassName(
+      "blog-post-comment-section",
+    ) as HTMLCollectionOf<HTMLElement>;
+
+    for (const commentSection of commentSections) {
+      observer.observe(commentSection);
+    }
+  });
+</script>
