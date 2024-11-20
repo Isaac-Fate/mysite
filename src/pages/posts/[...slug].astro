@@ -1,11 +1,14 @@
 ---
+import { cn } from "@/lib/utils";
+import { getCollection } from "astro:content";
+
 import type { CollectionEntry } from "astro:content";
 
-import { getCollection } from "astro:content";
 import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
 // import { Image } from "astro:assets";
 import { Image } from "@unpic/astro";
 import BlogPostCommmentSection from "@/components/BlogPostCommmentSection.astro";
+import { Separator } from "@/components/ui/separator";
 
 export async function getStaticPaths() {
   // Get blog posts collection
@@ -23,18 +26,21 @@ export const prerender = true;
 const { post } = Astro.props;
 
 // Render the blog post content
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
 
 // Get the cover image path
 let cover = post.data.cover;
-console.log(cover);
+
 if (!cover) {
   cover = `/images/${post.slug}/cover.png`;
-  console.log(cover);
 }
+
+const blogPostHeadings = headings.filter(
+  (heading) => heading.depth === 2 || heading.depth === 3,
+);
 ---
 
-<BlogPostLayout frontmatter={post.data}>
+<BlogPostLayout frontmatter={post.data} blogPostHeadings={blogPostHeadings}>
   <!-- Title -->
   <h1>{post.data.title}</h1>
 
@@ -49,6 +55,50 @@ if (!cover) {
   <!-- Main content -->
   <Content />
 
+  <!-- Separator -->
+  <Separator />
+
   <!-- Comments -->
   <BlogPostCommmentSection />
+
+  <!-- Table of contents -->
+  <div
+    class="not-prose absolute right-0 top-[4rem] z-40 hidden w-[auto] flex-col rounded-md border-l-2 bg-panel p-4 shadow-md"
+  >
+    {
+      blogPostHeadings.map((heading) => {
+        return (
+          <a
+            class={cn("group text-code-string hover:text-code-function", {
+              // Add indentation for subheadings
+              "ml-8 text-code-string/70": heading.depth > 2,
+            })}
+            href={`#${heading.slug}`}
+          >
+            {/* Title */}
+            <div class="flex flex-row gap-1">
+              <div class="flex h-full flex-col justify-start">
+                <span class="icon-[material-symbols--arrow-right] h-6 w-6" />
+              </div>
+
+              <p class="h-full transition duration-300 group-hover:translate-x-1">
+                {heading.text}
+              </p>
+            </div>
+          </a>
+        );
+      })
+    }
+  </div>
 </BlogPostLayout>
+
+<style is:global>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  h2,
+  h3 {
+    scroll-margin-top: 6rem;
+  }
+</style>

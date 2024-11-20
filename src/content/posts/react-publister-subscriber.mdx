@@ -7,23 +7,15 @@ tags:
 ---
 
 import { Info } from "@/components/callout"
+import StopwatchVideoDemo from "@/components/StopwatchVideoDemo.astro"
 
 ## Stopwatch Demo
 
 Consider building a stopwatch component like the one below:
 
-```math
-\floor{x}
-```
+<StopwatchVideoDemo />
 
-<Info>
 
-Series
-
-```math
-e^x = \sum_{n=0}^\infty \frac{x^n}{n!}
-```
-</Info>
 
 🤔 Some thoughts:
 - The stopwatch should manage the state on its own. We should not lift the state up since it is updating actively. Lifting the state up to its parent would lead to frequent rerendering of the parent component, potentially degrading performance, especially if the parent includes heavy components or complex logic.

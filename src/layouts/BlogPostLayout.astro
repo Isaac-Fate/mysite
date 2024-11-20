@@ -1,15 +1,27 @@
 ---
+import { cn } from "@/lib/utils";
 import MainLayout from "./MainLayout.astro";
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+  className?: string;
+  frontmatter: any;
+  blogPostHeadings?: MarkdownHeading[];
+}
 
 // Props
-const { frontmatter } = Astro.props;
+const { className, frontmatter, blogPostHeadings } = Astro.props;
 
 const title = `Isaac Fei - ${frontmatter.title}`;
 ---
 
 <MainLayout
-  className="prose gap-0 text-code-variable prose-h1:text-code-class prose-h2:text-code-function prose-h3:text-code-function prose-a:text-code-constant prose-blockquote:text-code-string prose-strong:text-code-variable prose-code:text-code-keyword-control prose-ul:mt-0"
+  className={cn(
+    "prose gap-0 text-code-variable prose-h1:text-code-class prose-h2:text-code-function prose-h3:text-code-function prose-a:text-code-constant prose-blockquote:text-code-string prose-strong:text-code-variable prose-code:text-code-keyword-control prose-ul:mt-0",
+    className,
+  )}
   title={title}
+  blogPostHeadings={blogPostHeadings}
 >
   <!-- Blog post content -->
   <slot />

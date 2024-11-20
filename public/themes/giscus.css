@@ -60,7 +60,7 @@ main {
   --color-fg-subtle: #6e7681;
   --color-canvas-default: rgba(24, 24, 24, 1);
   --color-canvas-overlay: hsl(0 0% 13%);
-  --color-canvas-inset: #010409;
+  --color-canvas-inset: hsl(0 0% 13%);
   --color-canvas-subtle: hsl(0 0% 13%);
   --color-border-default: #30363d;
   --color-border-muted: #21262d;
@@ -82,7 +82,7 @@ main {
 
   /*! Extensions from @primer/css/alerts/flash.scss */
   --color-social-reaction-bg-hover: var(--color-scale-gray-7);
-  --color-social-reaction-bg-reacted-hover: var(--color-accent-fg);
+  --color-social-reaction-bg-reacted-hover: hsl(0 0% 18%);
 }
 
 main .pagination-loader-container {

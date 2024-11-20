@@ -6,15 +6,15 @@ import Search from "./Search.astro";
   id="search-dialog"
   class="fixed bottom-0 left-0 right-0 top-0 z-50 hidden bg-background md:bg-overlay md:backdrop-blur"
 >
-  <!-- For landscape wide screens -->
+  <!-- For wide screens -->
   <div
     id="search-dialog-modal"
-    class="hidden h-screen landscape:md:flex landscape:md:flex-col landscape:md:items-center landscape:md:justify-center"
+    class="hidden h-screen md:flex md:flex-col md:items-center md:justify-center"
   >
     <div
       class="flex w-2/3 min-w-[20rem] max-w-[500px] flex-col rounded-md border-2 bg-panel p-8 shadow-md md:w-3/4 md:max-w-[800px]"
       style={{
-        height: "calc(20rem + 2rem * 2)",
+        height: "calc(50vh + 2rem * 2)",
       }}
     >
       <Search />
@@ -22,9 +22,7 @@ import Search from "./Search.astro";
   </div>
 
   <!-- For protrait or narrow screens -->
-  <div
-    class="flex max-h-screen w-full flex-col overflow-auto p-4 landscape:md:hidden"
-  >
+  <div class="flex max-h-screen w-full flex-col overflow-auto p-4 md:hidden">
     <div class="flex w-full flex-col justify-between gap-2">
       <!-- Search -->
       <Search />

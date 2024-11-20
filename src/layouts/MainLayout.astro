@@ -6,18 +6,20 @@ import SearchDialog from "@/components/SearchDialog.astro";
 
 import { cn } from "@/lib/utils";
 import { config } from "@/config";
+import type { MarkdownHeading } from "astro";
 
 interface Props {
   className?: string;
   title: string;
+  blogPostHeadings?: MarkdownHeading[];
 }
 
-const { className, title } = Astro.props;
+const { className, title, blogPostHeadings } = Astro.props;
 ---
 
 <BaseLayout className="" title={title}>
   <!-- Header -->
-  <Header />
+  <Header blogPostHeadings={blogPostHeadings} />
 
   <!-- Search dialog -->
   <SearchDialog />

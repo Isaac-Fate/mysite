@@ -5,6 +5,13 @@ import { Logo } from "./logo";
 import NavigationLink from "./NavigationLink.astro";
 import SearchButton from "./SearchButton.astro";
 import { SideMenu } from "./side-menu";
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+  blogPostHeadings?: MarkdownHeading[];
+}
+
+const { blogPostHeadings } = Astro.props;
 ---
 
 <header
@@ -30,7 +37,7 @@ import { SideMenu } from "./side-menu";
 
   <!-- Side menu on narrow screens -->
   <div class="flex flex-col justify-center md:hidden">
-    <SideMenu client:load />
+    <SideMenu client:load blogPostHeadings={blogPostHeadings} />
   </div>
 </header>
 
