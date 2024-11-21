@@ -62,68 +62,85 @@ export function BlogPostTableOfContents(props: BlogPostTableOfContentsProps) {
   }
 
   return (
-    <div
-      className={cn("not-prose flex flex-col gap-2 py-4 pr-2", props.className)}
-    >
+    <div className={cn("not-prose flex flex-col gap-2 py-4", props.className)}>
       {/* Title */}
       {title && <p className="px-4 text-code-comment">{title}</p>}
 
       {/* Headings */}
-      <div className="flex flex-col gap-2 border-0">
+      <div className="flex flex-col gap-2">
         {secondLevelHeadings.map((secondLevelHeading) => {
-          return buildSecondLevelHeading(secondLevelHeading);
+          return (
+            <SecondLevelHeadingView
+              key={secondLevelHeading.slug}
+              heading={secondLevelHeading}
+            />
+          );
         })}
       </div>
     </div>
   );
 }
 
-function buildSecondLevelHeading(secondLevelHeading: SecondLevelHeading) {
-  const noSubheadings = secondLevelHeading.subheadings.length === 0;
+interface SecondLevelHeadingViewProps {
+  heading: SecondLevelHeading;
+}
+
+function SecondLevelHeadingView(props: SecondLevelHeadingViewProps) {
+  const noSubheadings = props.heading.subheadings.length === 0;
 
   return (
     <Collapsible className="">
       <div className="flex flex-row">
         <CollapsibleTrigger
-          className="justify-begin group flex flex-col"
+          className={cn("justify-begin group flex flex-row", {
+            "hover:cursor-pointer": !noSubheadings,
+          })}
           disabled={noSubheadings}
         >
           <span
             className={cn(
-              "mt-[0.2rem] h-2 w-2 text-muted-foreground group-[&[data-state=closed]]:icon-[material-symbols-light--keyboard-arrow-right] group-[&[data-state=open]]:icon-[material-symbols-light--keyboard-arrow-down]",
+              "not-prose mt-[0.2rem] h-4 w-4 text-muted-foreground group-[&[data-state=closed]]:icon-[material-symbols-light--keyboard-arrow-right] group-[&[data-state=open]]:icon-[material-symbols-light--keyboard-arrow-down]",
               {
                 invisible: noSubheadings,
               },
             )}
           ></span>
+
+          {/* Section symbol  */}
+          <span className="text-code-keyword-declaration">§</span>
+          <span>&nbsp;</span>
         </CollapsibleTrigger>
 
         {/* Title */}
-        <a className="group flex flex-row" href={`#${secondLevelHeading.slug}`}>
-          <span className="text-code-keyword-declaration">§</span>
-          <span>&nbsp;</span>
+        <a className="group flex flex-row" href={`#${props.heading.slug}`}>
           <span className="transition-transform duration-300 ease-in-out group-hover:translate-x-2 group-hover:text-code-constant">
-            {secondLevelHeading.text}
+            {props.heading.text}
           </span>
         </a>
       </div>
 
-      <CollapsibleContent className="ml-[1.05rem] flex flex-col border-l-2 pl-6">
-        {secondLevelHeading.subheadings.map((thirdLevelHeading) => {
-          return buildThirdLevelHeading(thirdLevelHeading);
+      <CollapsibleContent className="ml-[0.5rem] flex flex-col gap-1 border-l-2 pl-6">
+        {props.heading.subheadings.map((thirdLevelHeading, index) => {
+          return (
+            <ThirdLevelHeadingView key={index} heading={thirdLevelHeading} />
+          );
         })}
       </CollapsibleContent>
     </Collapsible>
   );
 }
 
-function buildThirdLevelHeading(thirdLevelHeading: MarkdownHeading) {
+interface ThirdLevelHeadingViewProps {
+  heading: MarkdownHeading;
+}
+
+function ThirdLevelHeadingView(props: ThirdLevelHeadingViewProps) {
   return (
-    <a className="group text-sm" href={`#${thirdLevelHeading.slug}`}>
+    <a className="group text-sm" href={`#${props.heading.slug}`}>
       <span className="text-code-keyword-declaration">§</span>
       <span>&nbsp;</span>
       <span className="transition-transform delay-1000 duration-300 ease-in-out group-hover:translate-x-2 group-hover:scale-110 group-hover:text-code-constant">
-        {thirdLevelHeading.text}
+        {props.heading.text}
       </span>
     </a>
   );

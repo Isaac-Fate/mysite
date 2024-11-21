@@ -5,10 +5,15 @@ import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
 import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
-// import { Image } from "astro:assets";
+
+import { Button } from "@/components/ui/button";
+import DateDisplay from "@/components/DateDisplay.astro";
 import { Image } from "@unpic/astro";
 import BlogPostCommmentSection from "@/components/BlogPostCommmentSection.astro";
 import { Separator } from "@/components/ui/separator";
+import { MenuIcon } from "lucide-react";
+import { SideMenu } from "@/components/side-menu";
+import { BlogPostTableOfContents } from "@/components/blog-post-table-of-contents";
 
 export async function getStaticPaths() {
   // Get blog posts collection
@@ -40,9 +45,31 @@ const blogPostHeadings = headings.filter(
 );
 ---
 
-<BlogPostLayout frontmatter={post.data} blogPostHeadings={blogPostHeadings}>
+<BlogPostLayout
+  className="relative"
+  frontmatter={post.data}
+  blogPostHeadings={blogPostHeadings}
+>
   <!-- Title -->
   <h1>{post.data.title}</h1>
+
+  <!-- Table of contents button -->
+  <SideMenu
+    client:load
+    className="fixed right-8 top-20 hidden bg-panel md:flex lg:hidden"
+    variant="in-margin"
+    blogPostHeadings={blogPostHeadings}
+  />
+
+  <!-- Table of contents in the margin for large screens -->
+  <BlogPostTableOfContents
+    client:load
+    className="not-prose fixed right-0 top-[4rem] hidden w-[18rem] pl-2 pr-8 lg:flex"
+    headings={blogPostHeadings}
+  />
+
+  <!-- Date -->
+  <DateDisplay className="text-code-string" date={post.data.createdAt} />
 
   <!-- Cover image -->
   <Image

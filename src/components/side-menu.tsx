@@ -16,27 +16,56 @@ import {
 import { MenuIcon } from "lucide-react";
 import { BlogPostTableOfContents } from "./blog-post-table-of-contents";
 import { Separator } from "./ui/separator";
+import type { ReactNode } from "react";
 
 interface SideMenuProps {
   className?: string;
+  variant?: "default" | "in-margin";
   blogPostHeadings?: MarkdownHeading[];
 }
 
 export function SideMenu(props: SideMenuProps) {
-  return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline" size={"icon"}>
+  let tableOfContentsTitle: string | null | undefined = undefined;
+  let menuTrigger: JSX.Element;
+
+  switch (props.variant) {
+    case "in-margin":
+      tableOfContentsTitle = null;
+
+      menuTrigger = (
+        <Button variant="outline" size="icon">
           <MenuIcon className="h-6 w-6" />
         </Button>
+      );
+      break;
+
+    default:
+      menuTrigger = (
+        <Button variant="outline" size="icon">
+          <MenuIcon className="h-6 w-6" />
+        </Button>
+      );
+  }
+
+  return (
+    <Sheet>
+      <SheetTrigger className={cn("", props.className)} asChild>
+        {menuTrigger}
       </SheetTrigger>
 
-      <SheetContent className="bg-panel p-0">
+      <SheetContent className="not-prose bg-panel p-0">
         {/* Header */}
         <SheetHeader className="h-[5rem] border-b-2 bg-panel p-6">
           <SheetTitle>
-            <span className="text-code-function">navigateTo</span>
-            <span className="text-code-bracket-1">{"()"}</span>
+            <p className="md:hidden">
+              <span className="text-code-function">navigateTo</span>
+              <span className="text-code-bracket-1">{"()"}</span>
+            </p>
+
+            <p className="hidden md:block">
+              <span className="text-code-function">goToSection</span>
+              <span className="text-code-bracket-1">{"()"}</span>
+            </p>
           </SheetTitle>
         </SheetHeader>
 
@@ -48,17 +77,20 @@ export function SideMenu(props: SideMenuProps) {
           }}
         >
           {/* Navigation links */}
-          <nav className="flex w-full flex-col gap-4 p-6">
+          <nav className="flex w-full flex-col gap-4 p-6 md:hidden">
             {config.navigationLinkConfigs.map((navigationLinkConfig, index) => (
               <NavigationLink key={index} {...navigationLinkConfig} />
             ))}
           </nav>
 
           {/* Separator */}
-          <Separator className="h-[2px]" />
+          <Separator className="h-[2px] md:hidden" />
 
           {/* Table of contents for the blog post */}
-          <BlogPostTableOfContents headings={props.blogPostHeadings} />
+          <BlogPostTableOfContents
+            title={tableOfContentsTitle}
+            headings={props.blogPostHeadings}
+          />
         </div>
       </SheetContent>
     </Sheet>
