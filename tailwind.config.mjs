@@ -127,6 +127,7 @@ export default {
       screens: {
         "card-landscape": "1140px",
         "wide-for-grid-2": "1044px",
+        "wide-for-in-margin-table-of-contents": "1250px",
       },
     },
   },

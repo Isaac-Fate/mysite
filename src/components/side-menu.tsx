@@ -88,6 +88,7 @@ export function SideMenu(props: SideMenuProps) {
 
           {/* Table of contents for the blog post */}
           <BlogPostTableOfContents
+            className="py-4"
             title={tableOfContentsTitle}
             headings={props.blogPostHeadings}
           />

@@ -6,12 +6,10 @@ import type { CollectionEntry } from "astro:content";
 
 import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
 
-import { Button } from "@/components/ui/button";
 import DateDisplay from "@/components/DateDisplay.astro";
 import { Image } from "@unpic/astro";
 import BlogPostCommmentSection from "@/components/BlogPostCommmentSection.astro";
 import { Separator } from "@/components/ui/separator";
-import { MenuIcon } from "lucide-react";
 import { SideMenu } from "@/components/side-menu";
 import { BlogPostTableOfContents } from "@/components/blog-post-table-of-contents";
 
@@ -56,17 +54,29 @@ const blogPostHeadings = headings.filter(
   <!-- Table of contents button -->
   <SideMenu
     client:load
-    className="fixed right-8 top-20 hidden bg-panel md:flex lg:hidden"
+    className="wide-for-in-margin-table-of-contents:hidden fixed right-8 top-20 hidden bg-panel md:flex"
     variant="in-margin"
     blogPostHeadings={blogPostHeadings}
   />
 
   <!-- Table of contents in the margin for large screens -->
-  <BlogPostTableOfContents
-    client:load
-    className="not-prose fixed right-0 top-[4rem] hidden w-[18rem] pl-2 pr-8 lg:flex"
-    headings={blogPostHeadings}
-  />
+  <div
+    class="not-prose wide-for-in-margin-table-of-contents:flex fixed right-[0.5rem] top-[4rem] hidden w-[13rem] flex-col border-l-0 bg-transparent"
+  >
+    <p class="bg-transparent px-4 py-2 text-code-comment backdrop-blur">
+      {"/* On this page */"}
+    </p>
+
+    <div class="overflow-x-auto pb-4" style={{ height: "calc(100vh - 4rem)" }}>
+      <BlogPostTableOfContents
+        client:load
+        className=" "
+        title={null}
+        headings={blogPostHeadings}
+        fontSizeCategory="default"
+      />
+    </div>
+  </div>
 
   <!-- Date -->
   <DateDisplay className="text-code-string" date={post.data.createdAt} />
