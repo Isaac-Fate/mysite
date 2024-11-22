@@ -1,0 +1,157 @@
+---
+import { cn } from "@/lib/utils";
+
+const bookCoverWidth = 300;
+const bookCoverHeight = 400;
+
+const titleContainerWidth = bookCoverWidth * 0.8;
+const titleContainerHeight = bookCoverHeight * 0.4;
+
+const titleContainerY = bookCoverHeight * 0.1;
+const titleContainerX = (bookCoverWidth - titleContainerWidth) / 2;
+
+const titleX = titleContainerX;
+const titleY = titleContainerY + titleContainerHeight * 0.3;
+
+const logoX = bookCoverWidth * 0.5;
+const logoY = bookCoverHeight * 0.7;
+
+interface Props {
+  title?: string;
+  coverTitleLines: string[];
+  coverLogoSymbol: string;
+  color?: string;
+  href?: string;
+}
+
+const { title, coverTitleLines, coverLogoSymbol, href } = Astro.props;
+
+const color = Astro.props.color || "black";
+---
+
+<a
+  class="book group flex flex-col items-center justify-center gap-4"
+  href={href}
+>
+  <!-- Inner book -->
+  <div
+    class="book__inner after:bg-[${color}] relative transition duration-300 [transform-style:preserve-3d] [transform:rotateY(-25deg)] group-hover:[transform:rotateY(0deg)]"
+    ,
+  >
+    <!-- Book cover -->
+    <div
+      class="book__cover relative rounded-l-sm rounded-r-md text-[5rem] text-zinc-400 transition duration-300 group-hover:rounded-md"
+      style={{ transform: "translateZ(26px)", backgroundColor: color }}
+    >
+      <!-- Corners -->
+      <span class="icon-[my--corner] absolute left-0 top-0"></span>
+      <span
+        class="icon-[my--corner] absolute right-0 top-0 scale-x-[-1] transform"
+      ></span>
+      <span class="icon-[my--corner] absolute bottom-0 right-0 rotate-180"
+      ></span>
+      <span
+        class="icon-[my--corner] absolute bottom-0 left-0 scale-y-[-1] transform"
+      ></span>
+
+      <!-- Main content -->
+      <svg
+        width="9rem"
+        height="12rem"
+        viewBox="0 0 300 400"
+        font-family="serif"
+        fill="currentColor"
+        stroke="currentColor"
+      >
+        <g>
+          <rect
+            x={titleContainerX}
+            y={titleContainerY}
+            width={titleContainerWidth}
+            height={titleContainerHeight}
+            rx="15"
+            fill="none"
+            stroke="none"
+          >
+          </rect>
+
+          <!-- Title  -->
+          <text x={titleX} y={titleY} font-size="2.5rem" font-weight={500}>
+            <!-- Multiple lines -->
+            {
+              coverTitleLines.map((line, index) => (
+                <tspan x={titleX} dy={index === 0 ? "0em" : "1.2em"}>
+                  {line}
+                </tspan>
+              ))
+            }
+          </text>
+        </g>
+
+        <!-- Logo -->
+        <text
+          x={logoX}
+          y={logoY}
+          dominant-baseline="middle"
+          text-anchor="middle"
+          font-size="4rem"
+          font-weight={600}
+        >
+          {coverLogoSymbol}
+        </text>
+      </svg>
+    </div>
+
+    <!-- Book back cover -->
+    <div
+      class="absolute bottom-0 left-0 right-0 top-0 rounded-l-sm rounded-r-md shadow-md transition duration-300 group-hover:rounded-md"
+      style={{ transform: "translateZ(-26px)", backgroundColor: color }}
+    >
+    </div>
+  </div>
+
+  <!-- Title -->
+  <p class="text-base text-code-variable">{title}</p>
+</a>
+
+<style is:global>
+  .book {
+    --book-thickness: 26px;
+    perspective: 1000px;
+  }
+
+  /* Book pages */
+  .book__inner::before {
+    position: absolute;
+    content: " ";
+    left: 100%;
+    top: 2%;
+    width: calc(var(--book-thickness) * 2);
+    height: 96%;
+    transform: translate(-58%, 0) rotateY(90deg);
+    background: linear-gradient(
+      90deg,
+      #e4e4e7 0%,
+      #71717a 5%,
+      #e4e4e7 10%,
+      #71717a 15%,
+      #e4e4e7 20%,
+      #71717a 25%,
+      #e4e4e7 30%,
+      #71717a 35%,
+      #e4e4e7 40%,
+      #71717a 45%,
+      #e4e4e7 50%,
+      #71717a 55%,
+      #e4e4e7 60%,
+      #71717a 65%,
+      #e4e4e7 70%,
+      #71717a 75%,
+      #e4e4e7 80%,
+      #71717a 85%,
+      #e4e4e7 90%,
+      #71717a 95%,
+      #e4e4e7 100%
+    );
+  }
+</style>

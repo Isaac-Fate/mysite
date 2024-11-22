@@ -15,6 +15,8 @@ import {
 } from "@/components/social-media-link";
 import ListTileLink from "@/components/ListTileLink.astro";
 import BlogPostCardContainer from "@/components/BlogPostCardContainer.astro";
+import MathematicalAnalysisNotebook from "@/components/notebook/MathematicalAnalysisNotebook.astro";
+import LinearAlgebraNotebook from "@/components/notebook/LinearAlgebraNotebook.astro";
 
 // Utilities
 import { getCollection } from "astro:content";
@@ -69,15 +71,19 @@ const recentBlogPosts = blogPosts.slice(0, maxNumRecentBlogPosts);
 
   <p class="text-code-comment">{"// Mathematics Notebooks"}</p>
 
-  <ul class="flex flex-col gap-4">
-    <ListTileLink
+  <ul class="flex grid-cols-2 flex-col gap-8 md:grid">
+    <MathematicalAnalysisNotebook />
+
+    <LinearAlgebraNotebook />
+
+    <!-- <ListTileLink
       title="Mathematical Analysis"
       href="https://isaac-fate.github.io/mathematical-analysis/intro.html"
     />
     <ListTileLink
       title="Linear Algebra"
       href="https://isaac-fate.github.io/linear-algebra/intro.html"
-    />
+    /> -->
   </ul>
 
   <!-- End of notebooks -->

@@ -54,13 +54,13 @@ const blogPostHeadings = headings.filter(
   <!-- Table of contents button -->
   <SideMenu
     client:load
-    className="wide-for-in-margin-table-of-contents:hidden fixed right-8 top-20 hidden bg-panel md:flex"
+    className="fixed right-8 top-20 hidden bg-panel md:flex"
     variant="in-margin"
     blogPostHeadings={blogPostHeadings}
   />
 
   <!-- Table of contents in the margin for large screens -->
-  <div
+  <!-- <div
     class="not-prose wide-for-in-margin-table-of-contents:flex fixed right-[0.5rem] top-[4rem] hidden w-[13rem] flex-col border-l-0 bg-transparent"
   >
     <p class="bg-transparent px-4 py-2 text-code-comment backdrop-blur">
@@ -76,7 +76,7 @@ const blogPostHeadings = headings.filter(
         fontSizeCategory="default"
       />
     </div>
-  </div>
+  </div> -->
 
   <!-- Date -->
   <DateDisplay className="text-code-string" date={post.data.createdAt} />

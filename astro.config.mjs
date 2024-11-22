@@ -23,17 +23,17 @@ import rehypeKatex from "rehype-katex";
 
 // https://astro.build/config
 export default defineConfig({
-  // image: {
-  //   service: imageService({
-  //     // This can usually be auto-detected
-  //     // fallbackService: "netlify",
+  image: {
+    service: imageService({
+      // This can usually be auto-detected
+      // fallbackService: "netlify",
 
-  //     placeholder: "blurhash",
+      placeholder: "blurhash",
 
-  //     // This is the default
-  //     layout: "constrained",
-  //   }),
-  // },
+      // This is the default
+      layout: "constrained",
+    }),
+  },
   markdown: {
     syntaxHighlight: "prism",
     remarkPlugins: [[remarkMath, {}]],

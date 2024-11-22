@@ -1,12 +1,32 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
-import Search from "@/components/Search.astro";
+
+const bookCoverWidth = 300;
+const bookCoverHeight = 400;
+
+const titleContainerWidth = bookCoverWidth * 0.8;
+const titleContainerHeight = bookCoverHeight * 0.4;
+
+const titleContainerY = bookCoverHeight * 0.1;
+const titleContainerX = (bookCoverWidth - titleContainerWidth) / 2;
+
+const titleX = titleContainerX;
+const titleY = titleContainerY + titleContainerHeight * 0.3;
+
+const logoX = bookCoverWidth * 0.5;
+const logoY = bookCoverHeight * 0.7;
+
+import Book from "@/components/Book.astro";
 ---
 
 <MainLayout title="Playground">
   <h1 class="">Playground</h1>
 
-  <div class="border-2 p-4">
-    <Search />
+  <div class="grid grid-cols-2">
+    <Book
+      coverTitleLines={["Mathematical", "Analysis"]}
+      coverLogoSymbol="∫"
+      color="#881337"
+    />
   </div>
 </MainLayout>

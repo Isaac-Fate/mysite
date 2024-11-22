@@ -84,12 +84,15 @@ export function SideMenu(props: SideMenuProps) {
           </nav>
 
           {/* Separator */}
-          <Separator className="h-[2px] md:hidden" />
+          <Separator
+            className={cn("h-[2px]", {
+              hidden: !props.blogPostHeadings,
+            })}
+          />
 
           {/* Table of contents for the blog post */}
           <BlogPostTableOfContents
-            className="py-4"
-            title={tableOfContentsTitle}
+            className="px-2 py-4"
             headings={props.blogPostHeadings}
           />
         </div>
