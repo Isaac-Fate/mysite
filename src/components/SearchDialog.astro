@@ -31,11 +31,7 @@ import Search from "./Search.astro";
 </div>
 
 <script>
-  import {
-    getSearchDialog,
-    closeSearchDialog,
-    addSearchCancelButtons,
-  } from "@/utils";
+  import { getSearchDialog, closeSearchDialog } from "@/utils";
 
   // Hit Escape key to close the search dialog
   document.addEventListener("keyup", (event) => {

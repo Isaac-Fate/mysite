@@ -29,6 +29,10 @@ export function getSearchDialog() {
   return document.getElementById("search-dialog");
 }
 
+export function isSearchDialogOpen() {
+  return getSearchDialog()?.getAttribute("data-open") === "true";
+}
+
 export function openSearchDialog() {
   // Get the search dialog
   const searchDialog = getSearchDialog();
@@ -36,6 +40,9 @@ export function openSearchDialog() {
   if (!searchDialog) {
     return;
   }
+
+  // Add data-open attribute
+  searchDialog.setAttribute("data-open", "true");
 
   // Remove the hidden class
   searchDialog.classList.remove("hidden");
@@ -57,6 +64,9 @@ export async function closeSearchDialog() {
   if (!searchDialog) {
     return;
   }
+
+  // Update data-open attribute
+  searchDialog.setAttribute("data-open", "false");
 
   // Remove the search-dialog-fade-in class
   searchDialog.classList.remove("search-dialog-fade-in");

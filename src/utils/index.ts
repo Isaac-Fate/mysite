@@ -1,5 +1,6 @@
 import {
   getSearchDialog,
+  isSearchDialogOpen,
   openSearchDialog,
   closeSearchDialog,
   addSearchCancelButtons,
@@ -7,6 +8,7 @@ import {
 
 export {
   getSearchDialog,
+  isSearchDialogOpen,
   openSearchDialog,
   closeSearchDialog,
   addSearchCancelButtons,

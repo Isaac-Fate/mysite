@@ -1,6 +1,4 @@
 ---
-import { cn } from "@/lib/utils";
-
 const bookCoverWidth = 300;
 const bookCoverHeight = 400;
 
@@ -30,7 +28,7 @@ const color = Astro.props.color || "black";
 ---
 
 <a
-  class="book group flex flex-col items-center justify-center gap-4"
+  class="book group flex flex-col items-center justify-center gap-4 group-hover:cursor-pointer"
   href={href}
 >
   <!-- Inner book -->
@@ -111,7 +109,7 @@ const color = Astro.props.color || "black";
   </div>
 
   <!-- Title -->
-  <p class="text-base text-code-variable">{title}</p>
+  <!-- <p class="text-base text-code-variable">{title}</p> -->
 </a>
 
 <style is:global>

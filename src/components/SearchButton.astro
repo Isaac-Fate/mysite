@@ -36,7 +36,7 @@ const { className } = Astro.props;
 </div>
 
 <script>
-  import { openSearchDialog } from "@/utils";
+  import { openSearchDialog, isSearchDialogOpen } from "@/utils";
 
   // Hotkey
   const hotkey = "/";
@@ -77,7 +77,7 @@ const { className } = Astro.props;
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === hotkey) {
+    if (event.key === hotkey && !isSearchDialogOpen()) {
       event.preventDefault();
 
       // Get the search button hotkey icon
@@ -91,7 +91,7 @@ const { className } = Astro.props;
   });
 
   document.addEventListener("keyup", (event) => {
-    if (event.key === hotkey) {
+    if (event.key === hotkey && !isSearchDialogOpen()) {
       event.preventDefault();
 
       // Get the search button hotkey icon

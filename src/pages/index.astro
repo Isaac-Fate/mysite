@@ -6,17 +6,17 @@ import type { CollectionEntry } from "astro:content";
 import MainLayout from "@/layouts/MainLayout.astro";
 
 // Components
-import { Image } from "astro:assets";
+import { Image } from "@unpic/astro";
 import {
   GitHubLink,
   WhatsAppLink,
   MediumLink,
   EmailLink,
 } from "@/components/social-media-link";
-import ListTileLink from "@/components/ListTileLink.astro";
 import BlogPostCardContainer from "@/components/BlogPostCardContainer.astro";
 import MathematicalAnalysisNotebook from "@/components/notebook/MathematicalAnalysisNotebook.astro";
 import LinearAlgebraNotebook from "@/components/notebook/LinearAlgebraNotebook.astro";
+import BookCard from "@/components/BookCard.astro";
 
 // Utilities
 import { getCollection } from "astro:content";
@@ -42,11 +42,12 @@ const recentBlogPosts = blogPosts.slice(0, maxNumRecentBlogPosts);
   <!-- Introduction -->
   <div class="flex flex-col items-center justify-between gap-4 text-center">
     <!-- My picture  -->
-    <div>
+    <div class="">
       <Image
         class="h-[12rem] w-[12rem] rounded-full border-2 object-cover shadow-md"
         src={myPicture}
-        alt="My picture"
+        alt="My Picture"
+        placeholder="blurhash"
       />
     </div>
 
@@ -71,19 +72,20 @@ const recentBlogPosts = blogPosts.slice(0, maxNumRecentBlogPosts);
 
   <p class="text-code-comment">{"// Mathematics Notebooks"}</p>
 
-  <ul class="flex grid-cols-2 flex-col gap-8 md:grid">
-    <MathematicalAnalysisNotebook />
-
-    <LinearAlgebraNotebook />
-
-    <!-- <ListTileLink
+  <ul class="flex flex-col gap-8 md:grid">
+    <BookCard
       title="Mathematical Analysis"
-      href="https://isaac-fate.github.io/mathematical-analysis/intro.html"
-    />
-    <ListTileLink
+      description="This notebook mainly follows the strucuture of the Apostol's Mathematical Analysis."
+    >
+      <MathematicalAnalysisNotebook />
+    </BookCard>
+
+    <BookCard
       title="Linear Algebra"
-      href="https://isaac-fate.github.io/linear-algebra/intro.html"
-    /> -->
+      description="This notebook mainly follows the strucuture of "
+    >
+      <LinearAlgebraNotebook />
+    </BookCard>
   </ul>
 
   <!-- End of notebooks -->
