@@ -1,12 +1,17 @@
 ---
 import { cn } from "@/lib/utils";
-import MainLayout from "./MainLayout.astro";
+// import MainLayout from "./MainLayout.astro";
+import BaseLayout from "./BaseLayout.astro";
 import type { MarkdownHeading } from "astro";
+
+import Header from "@/components/Header.astro";
+import SearchDialog from "@/components/SearchDialog.astro";
+import BlogPostToc from "@/components/BlogPostToc.astro";
 
 interface Props {
   className?: string;
   frontmatter: any;
-  blogPostHeadings?: MarkdownHeading[];
+  blogPostHeadings: MarkdownHeading[];
 }
 
 // Props
@@ -15,17 +20,33 @@ const { className, frontmatter, blogPostHeadings } = Astro.props;
 const title = `Isaac Fei - ${frontmatter.title}`;
 ---
 
-<MainLayout
-  className={cn(
-    "prose gap-0 text-code-variable prose-h1:text-code-class prose-h2:text-code-function prose-h3:text-code-function prose-a:text-code-constant prose-blockquote:text-code-string prose-strong:text-code-variable prose-code:text-code-keyword-control prose-ul:mt-0",
-    className,
-  )}
-  title={title}
-  blogPostHeadings={blogPostHeadings}
->
-  <!-- Blog post content -->
-  <slot />
-</MainLayout>
+<BaseLayout className={cn("", className)} title={title}>
+  <!-- Header -->
+  <Header blogPostHeadings={blogPostHeadings} />
+
+  <!-- Search dialog -->
+  <SearchDialog />
+
+  <div class="mt-[4rem] flex w-full flex-row justify-between">
+    <!-- Table of contents -->
+    <BlogPostToc
+      className="hidden h-[calc(100vh-4rem)] w-1/4 md:block"
+      blogPostHeadings={blogPostHeadings}
+    />
+
+    <!-- Blog post content -->
+    <main
+      class="flex h-[calc(100vh-4rem)] w-full flex-col items-center overflow-auto p-8 md:w-3/4"
+    >
+      <!-- Apply prose -->
+      <article
+        class="prose text-code-variable prose-h1:text-code-class prose-h2:text-code-function prose-h3:text-code-function prose-a:text-code-constant prose-blockquote:text-code-string prose-strong:text-code-variable prose-code:text-code-keyword-control prose-ul:mt-0"
+      >
+        <slot />
+      </article>
+    </main>
+  </div>
+</BaseLayout>
 
 <style is:global>
   .expressive-code {

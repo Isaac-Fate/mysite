@@ -113,6 +113,16 @@ export default {
           },
           tag: "#808080",
         },
+
+        "dark-green": {
+          DEFAULT: "#002c2c",
+          dark: "#001414",
+        },
+        "rhythm-yellow": {
+          DEFAULT: "#f6ed99",
+          dark: "",
+        },
+        "tech-green": "#006865",
       },
 
       backgroundColor: {

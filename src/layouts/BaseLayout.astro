@@ -27,7 +27,12 @@ const { className, title } = Astro.props;
     <ViewTransitions />
   </head>
 
-  <body class={cn("flex flex-col items-center", className)}>
+  <body
+    class={cn(
+      "flex flex-col items-center overflow-hidden h-screen ",
+      className
+    )}
+  >
     <slot />
   </body>
 </html>

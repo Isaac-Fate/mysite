@@ -6,7 +6,7 @@ import type { CollectionEntry } from "astro:content";
 import MainLayout from "@/layouts/MainLayout.astro";
 
 // Components
-import { Image } from "@unpic/astro";
+import { Image } from "astro:assets";
 import {
   GitHubLink,
   WhatsAppLink,
@@ -21,6 +21,7 @@ import BookCard from "@/components/BookCard.astro";
 // Utilities
 import { getCollection } from "astro:content";
 import myPicture from "../assets/isaac-fei.jpg";
+import { Button } from "@/components/ui/button";
 
 // Get all blog posts from /content/posts
 const blogPosts: CollectionEntry<"posts">[] = await getCollection("posts");
@@ -28,7 +29,7 @@ const blogPosts: CollectionEntry<"posts">[] = await getCollection("posts");
 // Sort blog posts by creation date in descending order
 blogPosts.sort(
   (blogPost1, blogPost2) =>
-    blogPost2.data.createdAt.valueOf() - blogPost1.data.createdAt.valueOf(),
+    blogPost2.data.createdAt.valueOf() - blogPost1.data.createdAt.valueOf()
 );
 
 // Maximum number of recent blog posts
@@ -40,84 +41,20 @@ const recentBlogPosts = blogPosts.slice(0, maxNumRecentBlogPosts);
 
 <MainLayout className="flex h-full flex-col" title="Isaac Fei">
   <!-- Introduction -->
-  <div class="flex flex-col items-center justify-between gap-4 text-center">
-    <!-- My picture  -->
-    <div class="">
+  <div class="flex flex-col">
+    <!-- My picture -->
+    <div
+      class="h-[10rem] w-[10rem] overflow-clip rounded-full border-2 shadow-md"
+    >
       <Image
-        class="h-[12rem] w-[12rem] rounded-full border-2 object-cover shadow-md"
+        class="h-full w-full object-cover"
         src={myPicture}
-        alt="My Picture"
-        placeholder="blurhash"
+        alt="Isaac Fei"
       />
     </div>
-
-    <p>Welcome to my website 👋</p>
-
-    <!-- Social links -->
-    <div class="flex flex-row justify-between gap-4 text-2xl">
-      <GitHubLink />
-      <WhatsAppLink />
-      <MediumLink />
-      <EmailLink />
-    </div>
-  </div>
-
-  <!-- Notebooks -->
-
-  <div class="-translate-x-4 text-2xl font-semibold">
-    <span class="text-code-variable">notebooks</span>
-    <span class="text-code-plain">=</span>
-    <span class="text-code-bracket-1">{"["}</span>
-  </div>
-
-  <p class="text-code-comment">{"// Mathematics Notebooks"}</p>
-
-  <ul class="flex flex-col gap-8 md:grid">
-    <BookCard
-      title="Mathematical Analysis"
-      description="This notebook mainly follows the strucuture of the Apostol's Mathematical Analysis."
-    >
-      <MathematicalAnalysisNotebook />
-    </BookCard>
-
-    <BookCard
-      title="Linear Algebra"
-      description="This notebook mainly follows the strucuture of "
-    >
-      <LinearAlgebraNotebook />
-    </BookCard>
-  </ul>
-
-  <!-- End of notebooks -->
-  <div class="-translate-x-4 text-2xl font-semibold">
-    <span class="text-code-bracket-1">{"]"}</span>
-  </div>
-
-  <!-- Recent blog posts -->
-  <div class="-translate-x-4 text-2xl font-semibold">
-    <span class="text-code-variable">recentPosts</span>
-    <span class="text-code-plain">=</span>
-    <span class="text-code-bracket-1">{"["}</span>
-  </div>
-
-  <!-- Blog post cards -->
-  <BlogPostCardContainer blogPosts={recentBlogPosts} />
-
-  <!-- Read more -->
-  <!-- Navigate to the blog page -->
-  <a
-    class="flex flex-row text-xl hover:cursor-pointer md:text-2xl"
-    href="/blog/1"
-  >
-    <span class="text-code-plain">...</span>
-    <span>&nbsp;</span>
-    <span class="animate-pulse text-code-comment">
-      {"// Read more ->"}
-    </span>
-  </a>
-
-  <!-- End of recent blog post cards -->
-  <div class="-translate-x-4 text-2xl font-semibold">
-    <span class="text-code-bracket-1">{"]"}</span>
   </div>
 </MainLayout>
+
+<script is:inline>
+  import pdfjsDist from "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.9.155/+esm";
+</script>

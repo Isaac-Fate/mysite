@@ -92,6 +92,7 @@ export default defineConfig({
     // astroExpressiveCode() must be placed before mdx()
     astroExpressiveCode({
       styleOverrides: {},
+      // themes: ["slack-dark"],
     }),
 
     mdx(),
