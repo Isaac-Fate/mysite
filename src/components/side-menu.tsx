@@ -11,12 +11,9 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetClose,
 } from "@/components/ui/sheet";
 import { MenuIcon } from "lucide-react";
-import { BlogPostTableOfContents } from "./blog-post-table-of-contents";
 import { Separator } from "./ui/separator";
-import type { ReactNode } from "react";
 
 interface SideMenuProps {
   className?: string;
@@ -91,10 +88,7 @@ export function SideMenu(props: SideMenuProps) {
           />
 
           {/* Table of contents for the blog post */}
-          <BlogPostTableOfContents
-            className="px-2 py-4"
-            headings={props.blogPostHeadings}
-          />
+    
         </div>
       </SheetContent>
     </Sheet>

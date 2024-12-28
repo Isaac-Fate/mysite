@@ -24,16 +24,27 @@ const { className, blogPostHeadings } = Astro.props;
   <!-- Entries -->
   <div
     id="toc-entry-container"
-    class="flex h-[calc(100vh-4rem-4rem)] flex-col gap-4 overflow-auto px-8 pb-4 text-sm"
+    class="flex h-[calc(100vh-4rem-4rem)] flex-col gap-2 overflow-auto px-8 pb-4"
   >
     {
       blogPostHeadings.map((blogPostHeading) => {
         return (
           <a
-            class="toc-entry text-code-plain/60 data-[active=true]:text-code-plain"
+            class={cn(
+              "toc-entry flex flex-row text-sm text-code-plain/60 data-[active=true]:text-code-plain",
+              {
+                "text-xs": blogPostHeading.depth === 3,
+              }
+            )}
             href={`#${blogPostHeading.slug}`}
             data-heading-id={blogPostHeading.slug}
           >
+            <div
+              class={cn("", {
+                "w-4": blogPostHeading.depth === 3,
+              })}
+            />
+
             {/* Title */}
             <p>{blogPostHeading.text}</p>
           </a>
