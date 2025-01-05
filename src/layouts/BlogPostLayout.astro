@@ -1,12 +1,12 @@
 ---
 import { cn } from "@/lib/utils";
 // import MainLayout from "./MainLayout.astro";
-import BaseLayout from "./BaseLayout.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 import type { MarkdownHeading } from "astro";
 
 import Header from "@/components/Header.astro";
 import SearchDialog from "@/components/SearchDialog.astro";
-import BlogPostToc from "@/components/BlogPostToc.astro";
+import { BlogPostToc } from "@/components/blog-pose-toc";
 
 interface Props {
   className?: string;
@@ -30,6 +30,7 @@ const title = `Isaac Fei - ${frontmatter.title}`;
   <div class="mt-[4rem] flex w-full flex-row justify-between">
     <!-- Table of contents -->
     <BlogPostToc
+      client:load
       className="hidden h-[calc(100vh-4rem)] w-1/4 md:block"
       blogPostHeadings={blogPostHeadings}
     />
@@ -40,7 +41,7 @@ const title = `Isaac Fei - ${frontmatter.title}`;
     >
       <!-- Apply prose -->
       <article
-        class="prose text-code-variable prose-h1:text-code-class prose-h2:text-code-function prose-h3:text-code-function prose-a:text-code-constant prose-blockquote:text-code-string prose-strong:text-code-variable prose-code:text-code-keyword-control prose-ul:mt-0"
+        class="prose w-full text-code-variable prose-h1:text-code-class prose-h2:text-code-function prose-h3:text-code-function prose-a:text-code-constant prose-blockquote:text-code-string prose-strong:text-code-variable prose-code:text-code-keyword-control prose-ul:mt-0"
       >
         <slot />
       </article>

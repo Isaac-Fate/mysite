@@ -13,41 +13,20 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { MenuIcon } from "lucide-react";
-import { Separator } from "./ui/separator";
+import { BlogPostToc } from "@/components/blog-pose-toc";
 
 interface SideMenuProps {
   className?: string;
-  variant?: "default" | "in-margin";
   blogPostHeadings?: MarkdownHeading[];
 }
 
-export function SideMenu(props: SideMenuProps) {
-  let tableOfContentsTitle: string | null | undefined = undefined;
-  let menuTrigger: JSX.Element;
-
-  switch (props.variant) {
-    case "in-margin":
-      tableOfContentsTitle = null;
-
-      menuTrigger = (
-        <Button variant="outline" size="icon">
-          <MenuIcon className="h-6 w-6" />
-        </Button>
-      );
-      break;
-
-    default:
-      menuTrigger = (
-        <Button variant="outline" size="icon">
-          <MenuIcon className="h-6 w-6" />
-        </Button>
-      );
-  }
-
+export function SideMenu({ className, blogPostHeadings }: SideMenuProps) {
   return (
     <Sheet>
-      <SheetTrigger className={cn("", props.className)} asChild>
-        {menuTrigger}
+      <SheetTrigger className={cn("", className)} asChild>
+        <Button variant="outline" size="icon">
+          <MenuIcon className="h-6 w-6" />
+        </Button>
       </SheetTrigger>
 
       <SheetContent className="not-prose bg-panel p-0">
@@ -80,40 +59,38 @@ export function SideMenu(props: SideMenuProps) {
             ))}
           </nav>
 
-          {/* Separator */}
-          <Separator
-            className={cn("h-[2px]", {
-              hidden: !props.blogPostHeadings,
-            })}
-          />
-
           {/* Table of contents for the blog post */}
-    
+          {blogPostHeadings && (
+            <BlogPostToc
+              className="bg-inherit"
+              blogPostHeadings={blogPostHeadings}
+            />
+          )}
         </div>
       </SheetContent>
     </Sheet>
   );
 }
 
-function NavigationLink(props: NavigationLinkConfig) {
+function NavigationLink({ isActive, href, title }: NavigationLinkConfig) {
   // Get the current pathname
   const pathname = window.location.pathname;
 
   // Determine if the navigation link is active
-  let isActive = false;
-  if (props.isActive === true) {
-    isActive = true;
-  } else if (typeof props.isActive === "function") {
+  let resolvedIsActive = false;
+  if (isActive === true) {
+    resolvedIsActive = true;
+  } else if (typeof isActive === "function") {
     // Determine using the provided function
-    isActive = props.isActive(props.href, pathname);
-  } else if (!props.href) {
-    isActive = false;
+    resolvedIsActive = isActive(href, pathname);
+  } else if (!href) {
+    resolvedIsActive = false;
   } else {
     // Remove the possible trailing slashes
 
-    let modifiedHref = props.href;
+    let modifiedHref = href;
     if (modifiedHref.endsWith("/")) {
-      modifiedHref = props.href.slice(0, -1);
+      modifiedHref = href.slice(0, -1);
     }
 
     let modifiedPathname = pathname;
@@ -130,11 +107,11 @@ function NavigationLink(props: NavigationLinkConfig) {
       className={cn("text-lg font-bold", {
         "text-code-class": isActive,
       })}
-      href={props.href}
-      key={props.href}
+      href={href}
+      key={href}
     >
       <span className="text-code-tag">{"<"}</span>
-      <span>{props.title}</span>
+      <span>{title}</span>
       <span className="text-code-tag">{"/>"}</span>
     </a>
   );

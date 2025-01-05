@@ -1,61 +1,24 @@
----
+"use client";
+
+import { useEffect, useRef } from "react";
+
 import type { MarkdownHeading } from "node_modules/astro/dist/@types/astro";
 
 import { cn } from "@/lib/utils";
 
-interface Props {
+interface BlogPostTocProps {
   className?: string;
   blogPostHeadings: MarkdownHeading[];
 }
 
-const { className, blogPostHeadings } = Astro.props;
----
+export function BlogPostToc({ className, blogPostHeadings }: BlogPostTocProps) {
+  const tocHeaderRef = useRef<HTMLDivElement>(null);
+  const tocEntryContainerRef = useRef<HTMLDivElement>(null);
 
-<div class={cn("flex flex-col border-r-2 bg-panel ", className)}>
-  <p
-    id="toc-header"
-    class={"flex h-[4rem] flex-col justify-center px-8 py-4 font-bold text-code-plain data-[is-first-toc-entry-obscured=true]:shadow-md"}
-  >
-    ON THIS PAGE
-  </p>
-
-  <!-- Entries -->
-  <div
-    id="toc-entry-container"
-    class="flex h-[calc(100vh-4rem-4rem)] flex-col gap-2 overflow-auto px-8 pb-4"
-  >
-    {
-      blogPostHeadings.map((blogPostHeading) => {
-        return (
-          <a
-            class={cn(
-              "toc-entry flex flex-row text-sm text-code-plain/60 hover:text-code-plain data-[active=true]:text-code-plain",
-              {
-                "text-xs": blogPostHeading.depth === 3,
-              }
-            )}
-            href={`#${blogPostHeading.slug}`}
-            data-heading-id={blogPostHeading.slug}
-          >
-            <div
-              class={cn("", {
-                "w-4": blogPostHeading.depth === 3,
-              })}
-            />
-
-            {/* Title */}
-            <p>{blogPostHeading.text}</p>
-          </a>
-        );
-      })
-    }
-  </div>
-</div>
-
-<script>
   function checkIsFistTocEntryObsured(tocEntryContainer: HTMLElement) {
     // Get the TOC header
-    const tocHeader = document.getElementById("toc-header");
+    const tocHeader = tocHeaderRef.current;
+
     if (!tocHeader) {
       console.error("TOC header not found");
       return;
@@ -70,11 +33,10 @@ const { className, blogPostHeadings } = Astro.props;
     }
   }
 
-  document.addEventListener("astro:page-load", async () => {
-    console.debug("page is loaded");
-
+  useEffect(() => {
     // Get the TOC entry container
-    const tocEntryContainer = document.getElementById("toc-entry-container");
+    const tocEntryContainer = tocEntryContainerRef.current;
+
     if (!tocEntryContainer) {
       console.error("TOC entry container not found");
       return;
@@ -189,12 +151,55 @@ const { className, blogPostHeadings } = Astro.props;
       },
       {
         root: container,
-      }
+      },
     );
 
     // Observe the heading elements
     headings.forEach((heading) => {
       observer.observe(heading);
     });
-  });
-</script>
+  }, []);
+
+  return (
+    <div className={cn("flex flex-col border-r-2 bg-panel", className)}>
+      <p
+        ref={tocHeaderRef}
+        className={
+          "flex h-[4rem] flex-col justify-center px-8 py-4 font-bold text-code-plain data-[is-first-toc-entry-obscured=true]:shadow-lg"
+        }
+      >
+        ON THIS PAGE
+      </p>
+
+      {/* Entries */}
+      <div
+        ref={tocEntryContainerRef}
+        className="flex h-[calc(100vh-4rem-4rem)] flex-col gap-2 overflow-auto px-8 pb-4"
+      >
+        {blogPostHeadings.map((blogPostHeading) => {
+          return (
+            <a
+              className={cn(
+                "toc-entry flex flex-row text-sm text-code-plain/60 hover:text-code-plain data-[active=true]:text-code-plain",
+                {
+                  "text-xs": blogPostHeading.depth === 3,
+                },
+              )}
+              href={`#${blogPostHeading.slug}`}
+              data-heading-id={blogPostHeading.slug}
+            >
+              <div
+                className={cn("", {
+                  "w-4": blogPostHeading.depth === 3,
+                })}
+              />
+
+              {/* Title */}
+              <p>{blogPostHeading.text}</p>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
