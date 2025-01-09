@@ -35,8 +35,8 @@
     --background: 0 0% 13%;
     --foreground: 201 98% 80%;
 
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 9.41%;
+    --card-foreground: 201 98% 80%;
 
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
@@ -104,3 +104,5 @@
     --panel: 0 0% 9%;
   }
 }
+
+@import url("./dark-morden.css");
