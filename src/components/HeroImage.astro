@@ -1,0 +1,69 @@
+---
+import Image from "astro/components/Image.astro";
+import myPicture from "@/assets/isaac-fei-hero-image-02.png";
+---
+
+<div class="relative aspect-[3/4] h-[21rem]">
+  <div class="h-full w-full overflow-clip">
+    <Image
+      class="z-10 h-full object-contain"
+      aria-placeholder={"blur"}
+      src={myPicture}
+      alt="Isaac Fei"
+    />
+  </div>
+
+  <!-- Decoration: ">" in the background -->
+  <div class="absolute left-0 top-0 -z-10 h-full -translate-x-5 translate-y-0">
+    <svg
+      class="-z-10 h-full w-full scale-150"
+      xmlns="http://www.w3.org/2000/svg"
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="4"
+        d="m 9 7  l 14 14  L 9 35"
+      >
+      </path>
+
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="4"
+        d="M 17 41  h 22"
+        z-index="20"
+      >
+      </path>
+    </svg>
+  </div>
+
+  <!-- Decoration: "_" in the foreground -->
+  <div class="absolute left-0 top-0 h-full -translate-x-5 translate-y-0">
+    <svg
+      class="-z-10 h-full w-full scale-150"
+      xmlns="http://www.w3.org/2000/svg"
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="4"
+        d="M 17 41  h 22"
+        z-index="20"
+      >
+      </path>
+    </svg>
+  </div>
+</div>

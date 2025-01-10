@@ -20,14 +20,13 @@ import BlogPostCardContainer from "@/components/BlogPostCardContainer.astro";
 import MathematicalAnalysisNotebook from "@/components/notebook/MathematicalAnalysisNotebook.astro";
 import LinearAlgebraNotebook from "@/components/notebook/LinearAlgebraNotebook.astro";
 import BookCard from "@/components/BookCard.astro";
+import HeroImage from "@/components/HeroImage.astro";
+import { TypewriterText } from "@/components/typewriter-text";
 
 // Utilities
 import { getCollection } from "astro:content";
-import myPicture from "@/assets/isaac-fei.jpg";
 import banner from "@/assets/banner.png";
-
-// @ts-ignore
-import Typewriter from "typewriter-effect/dist/core";
+import myPicture from "@/assets/isaac-fei-hero-image.png";
 
 // Get all blog posts from /content/posts
 const blogPosts: CollectionEntry<"posts">[] = await getCollection("posts");
@@ -48,105 +47,47 @@ const recentBlogPosts = blogPosts.slice(0, maxNumRecentBlogPosts);
 <MainLayout className="flex h-full flex-col" title="Isaac Fei">
   <!-- Hero section -->
   <section class="flex flex-col justify-between md:flex-row md:gap-8">
-    <div class="flex flex-col gap-4">
-      <!-- Greeting -->
-      <p class="font-bold text-code-variable">Welcome to My Website</p>
+    <div class="flex flex-col justify-between gap-8">
+      <!-- Headline and subheadline -->
+      <div class="flex flex-col gap-8">
+        <!-- Headline -->
+        <div class="text-3xl font-bold text-code-class">
+          <p>My Learning Journal on</p>
+          <TypewriterText
+            client:only="react"
+            className="text-code-function"
+            texts={["Mathematics", "Softarware Development", "Engineering"]}
+          />
+        </div>
 
-      <!-- Description -->
-      <div
-        class="flex min-w-[16rem] flex-col text-2xl font-semibold text-code-class"
-      >
-        <p>A Space for</p>
-        <p>
-          <span>Sharing</span>
-          <span>Knowledge</span>
-        </p>
-
-        <p>
-          <span>in</span>
-          <span id="stem" class="text-code-function"></span>
-        </p>
-
-        <p>and Coding Techniques</p>
+        <!-- Subheadline -->
+        <div class="text-xl font-semibold">
+          A space where I jot down ideas, explore concepts, and share my journey
+          through mathematics, coding, and data science
+        </div>
       </div>
+
+      <!-- Self introduction -->
+      <p class="flex flex-wrap">
+        <span>I am a</span>
+        <span>&nbsp;</span>
+        <TypewriterText
+          client:only="react"
+          className="text-code-function"
+          texts={["data scientist", "full-stack developer", "math enthusiast"]}
+        />
+      </p>
     </div>
 
-    <!-- Banner image -->
-    <div class="h-[16rem] w-[24rem] overflow-clip rounded-xl border shadow">
-      <Image class="h-full w-full object-cover" src={banner} alt="Isaac Fei" />
+    <!-- Hero image -->
+    <div class="flex flex-col justify-between gap-8">
+      <HeroImage />
+
+      <p class="flex flex-row justify-center text-lg font-semibold">
+        <span class="text-code-tag">{"<"}</span>
+        <span class="text-code-class">Isaac Fei</span>
+        <span class="text-code-tag">{"/>"}</span>
+      </p>
     </div>
   </section>
-
-  <!-- Name card -->
-  <Card className="overflow-clip">
-    <CardHeader className="m-0 flex bg-muted">
-      <div class="flex flex-row gap-2">
-        <span class="size-2 rounded-full bg-muted-foreground"></span>
-        <span class="size-2 rounded-full bg-muted-foreground"></span>
-        <span class="size-2 rounded-full bg-muted-foreground"></span>
-      </div>
-    </CardHeader>
-
-    <CardContent className="m-0 flex flex-row justify-between gap-8 pt-4">
-      <div class="text-2xl">
-        <span class="text-code-tag">{"<"}</span>
-        <span class="font-bold text-code-class">Isaac Fei</span>
-        <span class="text-code-tag">{"/>"}</span>
-      </div>
-
-      <div class="flex flex-col gap-4">
-        <!-- My picture -->
-        <div class="size-32 overflow-clip rounded-full border-2 shadow-md">
-          <Image class="h-full object-cover" src={myPicture} alt="Isaac Fei" />
-        </div>
-
-        <!-- Social media links -->
-        <div
-          class="flex w-full flex-row items-center justify-between gap-2 text-2xl"
-        >
-          <GitHubLink />
-          <WhatsAppLink />
-          <MediumLink />
-          <EmailLink />
-        </div>
-      </div>
-    </CardContent>
-  </Card>
 </MainLayout>
-
-<script>
-  // @ts-ignore
-  import Typewriter from "typewriter-effect/dist/core";
-
-  document.addEventListener("astro:page-load", () => {
-    // Get the STEM element
-    const stemElement = document.getElementById("stem");
-
-    if (!stemElement) {
-      console.warn("failed to get the STEM element");
-      return;
-    }
-
-    // Create a typewriter
-    const typewriter = new Typewriter(stemElement, {
-      strings: ["Science", "Technology", "Engineering", "Mathematics"],
-      loop: true,
-      autoStart: true,
-    });
-  });
-</script>
-
-<style>
-  #typewriter {
-    border-right: 2px solid; /* Cursor effect */
-    white-space: nowrap; /* Prevent text wrapping */
-    overflow: hidden; /* Hide overflow */
-    animation: blink 0.7s step-end infinite; /* Blinking cursor */
-  }
-
-  @keyframes blink {
-    50% {
-      border-color: transparent; /* Blink effect */
-    }
-  }
-</style>

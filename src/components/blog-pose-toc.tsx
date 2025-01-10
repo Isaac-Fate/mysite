@@ -179,6 +179,7 @@ export function BlogPostToc({ className, blogPostHeadings }: BlogPostTocProps) {
         {blogPostHeadings.map((blogPostHeading) => {
           return (
             <a
+              key={blogPostHeading.slug}
               className={cn(
                 "toc-entry flex flex-row text-sm text-code-plain/60 hover:text-code-plain data-[active=true]:text-code-plain",
                 {

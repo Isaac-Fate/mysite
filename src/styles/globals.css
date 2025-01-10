@@ -105,4 +105,19 @@
   }
 }
 
-@import url("./dark-morden.css");
+/* @import url("./dark-morden.css"); */
+
+/* Blinking cursor */
+.cursor-blink {
+  animation: cursor-blink 1s steps(2) infinite;
+}
+
+@keyframes cursor-blink {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

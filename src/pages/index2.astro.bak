@@ -1,0 +1,152 @@
+---
+// Models
+import type { CollectionEntry } from "astro:content";
+
+// Layout
+import MainLayout from "@/layouts/MainLayout.astro";
+
+// Components
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Image } from "astro:assets";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  GitHubLink,
+  WhatsAppLink,
+  MediumLink,
+  EmailLink,
+} from "@/components/social-media-link";
+import BlogPostCardContainer from "@/components/BlogPostCardContainer.astro";
+import MathematicalAnalysisNotebook from "@/components/notebook/MathematicalAnalysisNotebook.astro";
+import LinearAlgebraNotebook from "@/components/notebook/LinearAlgebraNotebook.astro";
+import BookCard from "@/components/BookCard.astro";
+
+// Utilities
+import { getCollection } from "astro:content";
+import myPicture from "@/assets/isaac-fei.jpg";
+import banner from "@/assets/banner.png";
+
+// @ts-ignore
+import Typewriter from "typewriter-effect/dist/core";
+
+// Get all blog posts from /content/posts
+const blogPosts: CollectionEntry<"posts">[] = await getCollection("posts");
+
+// Sort blog posts by creation date in descending order
+blogPosts.sort(
+  (blogPost1, blogPost2) =>
+    blogPost2.data.createdAt.valueOf() - blogPost1.data.createdAt.valueOf()
+);
+
+// Maximum number of recent blog posts
+const maxNumRecentBlogPosts = 5;
+
+// Get the recent blog posts
+const recentBlogPosts = blogPosts.slice(0, maxNumRecentBlogPosts);
+---
+
+<MainLayout className="flex h-full flex-col" title="Isaac Fei">
+  <!-- Hero section -->
+  <section class="flex flex-col justify-between md:flex-row md:gap-8">
+    <div class="flex flex-col gap-4">
+      <!-- Greeting -->
+      <p class="font-bold text-code-variable">Welcome to My Website</p>
+
+      <!-- Description -->
+      <div
+        class="flex min-w-[16rem] flex-col text-2xl font-semibold text-code-class"
+      >
+        <p>A Space for</p>
+        <p>
+          <span>Sharing</span>
+          <span>Knowledge</span>
+        </p>
+
+        <p>
+          <span>in</span>
+          <span id="stem" class="text-code-function"></span>
+        </p>
+
+        <p>and Coding Techniques</p>
+      </div>
+    </div>
+
+    <!-- Banner image -->
+    <div class="h-[16rem] w-[24rem] overflow-clip rounded-xl border shadow">
+      <Image class="h-full w-full object-cover" src={banner} alt="Isaac Fei" />
+    </div>
+  </section>
+
+  <!-- Name card -->
+  <Card className="overflow-clip">
+    <CardHeader className="m-0 flex bg-muted">
+      <div class="flex flex-row gap-2">
+        <span class="size-2 rounded-full bg-muted-foreground"></span>
+        <span class="size-2 rounded-full bg-muted-foreground"></span>
+        <span class="size-2 rounded-full bg-muted-foreground"></span>
+      </div>
+    </CardHeader>
+
+    <CardContent className="m-0 flex flex-row justify-between gap-8 pt-4">
+      <div class="text-2xl">
+        <span class="text-code-tag">{"<"}</span>
+        <span class="font-bold text-code-class">Isaac Fei</span>
+        <span class="text-code-tag">{"/>"}</span>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <!-- My picture -->
+        <div class="size-32 overflow-clip rounded-full border-2 shadow-md">
+          <Image class="h-full object-cover" src={myPicture} alt="Isaac Fei" />
+        </div>
+
+        <!-- Social media links -->
+        <div
+          class="flex w-full flex-row items-center justify-between gap-2 text-2xl"
+        >
+          <GitHubLink />
+          <WhatsAppLink />
+          <MediumLink />
+          <EmailLink />
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</MainLayout>
+
+<script>
+  // @ts-ignore
+  import Typewriter from "typewriter-effect/dist/core";
+
+  document.addEventListener("astro:page-load", () => {
+    // Get the STEM element
+    const stemElement = document.getElementById("stem");
+
+    if (!stemElement) {
+      console.warn("failed to get the STEM element");
+      return;
+    }
+
+    // Create a typewriter
+    const typewriter = new Typewriter(stemElement, {
+      strings: ["Science", "Technology", "Engineering", "Mathematics"],
+      loop: true,
+      autoStart: true,
+    });
+  });
+</script>
+
+<style>
+  #typewriter {
+    border-right: 2px solid; /* Cursor effect */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow */
+    animation: blink 0.7s step-end infinite; /* Blinking cursor */
+  }
+
+  @keyframes blink {
+    50% {
+      border-color: transparent; /* Blink effect */
+    }
+  }
+</style>
