@@ -44,43 +44,62 @@ const maxNumRecentBlogPosts = 5;
 const recentBlogPosts = blogPosts.slice(0, maxNumRecentBlogPosts);
 ---
 
-<MainLayout className="flex h-full flex-col" title="Isaac Fei">
+<MainLayout className="flex h-full flex-col gap-16" title="Isaac Fei">
   <!-- Hero section -->
-  <section class="flex flex-col justify-between md:flex-row md:gap-8">
+  <section class="flex flex-col justify-between md:flex-row md:gap-16">
     <div class="flex flex-col justify-between gap-8">
       <!-- Headline and subheadline -->
       <div class="flex flex-col gap-8">
         <!-- Headline -->
-        <div class="text-3xl font-bold text-code-class">
+        <div
+          class="fluid-h1 flex flex-col text-xl font-bold text-code-class md:h-auto md:text-3xl"
+        >
           <p>My Learning Journal on</p>
+
           <TypewriterText
             client:only="react"
             className="text-code-function"
-            texts={["Mathematics", "Softarware Development", "Engineering"]}
+            texts={["Mathematics", "Software Development", "Engineering"]}
           />
         </div>
 
         <!-- Subheadline -->
-        <div class="text-xl font-semibold">
+        <div class="fluid-h2 text-base font-semibold md:text-xl">
           A space where I jot down ideas, explore concepts, and share my journey
           through mathematics, coding, and data science
         </div>
       </div>
 
-      <!-- Self introduction -->
-      <p class="flex flex-wrap">
-        <span>I am a</span>
-        <span>&nbsp;</span>
-        <TypewriterText
-          client:only="react"
-          className="text-code-function"
-          texts={["data scientist", "full-stack developer", "math enthusiast"]}
-        />
-      </p>
+      <div class="flex flex-col overflow-clip rounded-lg border bg-card shadow">
+        <!-- Social media links -->
+        <div
+          class="flex h-full flex-row items-center gap-2 bg-muted p-2 text-zinc-500"
+        >
+          <GitHubLink />
+          <WhatsAppLink />
+          <MediumLink />
+          <EmailLink />
+        </div>
+
+        <!-- Self introduction -->
+        <p class="fluid-p flex flex-wrap p-4">
+          <span>I am a</span>
+          <span>&nbsp;</span>
+          <TypewriterText
+            client:only="react"
+            className="text-code-function"
+            texts={[
+              "data scientist",
+              "full-stack developer",
+              "math enthusiast",
+            ]}
+          />
+        </p>
+      </div>
     </div>
 
     <!-- Hero image -->
-    <div class="flex flex-col justify-between gap-8">
+    <div class="flex flex-col items-center justify-between gap-4">
       <HeroImage />
 
       <p class="flex flex-row justify-center text-lg font-semibold">
@@ -90,4 +109,68 @@ const recentBlogPosts = blogPosts.slice(0, maxNumRecentBlogPosts);
       </p>
     </div>
   </section>
+
+  <!-- Recent blog posts -->
+  <section class="flex flex-col gap-4">
+    <!-- Title -->
+    <div class="-translate-x-4 text-2xl font-semibold">
+      <span class="text-code-variable">blogPosts</span>
+      <span class="text-code-plain">=</span>
+      <span class="text-code-bracket-1">{"["}</span>
+    </div>
+
+    <BlogPostCardContainer blogPosts={recentBlogPosts} />
+
+    <!-- Read more -->
+    <a class="ellipse-animation flex flex-wrap text-code-comment" href="/blog/1"
+      >// Read more
+    </a>
+
+    <!-- End of blog post cards -->
+    <div class="-translate-x-4 text-2xl font-semibold">
+      <span class="text-code-bracket-1">{"]"}</span>
+    </div>
+  </section>
 </MainLayout>
+
+<style>
+  .fluid-h1 {
+    font-size: clamp(20px, 3vw, 1.875rem);
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .fluid-h2 {
+    font-size: clamp(18px, 2vw, 1.25rem);
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .fluid-p {
+    font-size: clamp(14px, 1.75vw, 1rem);
+    line-height: 1.4;
+  }
+
+  .ellipse-animation::after {
+    content: "";
+    animation: ellipse-animation 1.5s infinite;
+  }
+
+  @keyframes ellipse-animation {
+    0% {
+      content: "";
+    }
+    25% {
+      content: ".";
+    }
+    50% {
+      content: "..";
+    }
+    75% {
+      content: "...";
+    }
+    100% {
+      content: "";
+    }
+  }
+</style>

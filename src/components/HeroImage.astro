@@ -3,7 +3,7 @@ import Image from "astro/components/Image.astro";
 import myPicture from "@/assets/isaac-fei-hero-image-02.png";
 ---
 
-<div class="relative aspect-[3/4] h-[21rem]">
+<div class="hero-image-container relative aspect-[3/4] w-[16rem]">
   <div class="h-full w-full overflow-clip">
     <Image
       class="z-10 h-full object-contain"
@@ -67,3 +67,9 @@ import myPicture from "@/assets/isaac-fei-hero-image-02.png";
     </svg>
   </div>
 </div>
+
+<style>
+  .hero-image-container {
+    width: clamp(10rem, 20vw, 16rem);
+  }
+</style>

@@ -30,7 +30,7 @@ export function TypewriterText({
   }, []);
 
   return (
-    <div className={cn("flex flex-row", className)}>
+    <div className={cn("flex flex-wrap", className)}>
       <span>{text}</span>
 
       {/* Cursor */}

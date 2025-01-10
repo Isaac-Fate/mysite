@@ -134,6 +134,10 @@ export default {
         "fira-code": ['"Fira Code"'],
       },
 
+      fontSize: {
+        "fluid-heading": "clamp(24px, 5vw, 48px)",
+      },
+
       screens: {
         "card-landscape": "1140px",
         "wide-for-grid-2": "1044px",
